@@ -221,6 +221,10 @@ output.json
 *.sln
 *.suo
 
+# Unity 패키지 매니저 설정 파일 예외 (위의 **/Packages/* 패턴을 재정의)
+!Packages/manifest.json
+!Packages/packages-lock.json
+
 # Unity 플러그인 바이너리 예외 (위의 *.dll 등 C/C++ 패턴을 재정의)
 !Assets/Plugins/**/*.dll
 !Assets/Plugins/**/*.so
