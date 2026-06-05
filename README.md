@@ -21,7 +21,7 @@ Unity 5.1.4f1에서 시작하여 Unity 6000.4.8f1까지 직접 마이그레이�
 - **CharacterController 기반 플레이어 이동** — 점프, 더블점프, 넉백, 가속패드, 안티그래비티, 이동 플랫폼 탑승
 - **FMOD 오디오 미들웨어 통합** — SoundBoard 추상화 레이어를 통한 BGM·SFX·환경음 제어
 - **오브젝트 풀링 시스템** — 런타임 오브젝트 생성 비용 절감
-- **AssetBundle 런타임 로딩** — 온라인/로컬/스트리밍 모드 분기 지원
+- **Addressables 기반 런타임 로딩** — 비동기 로딩, 핸들 캐싱, 씬·에셋 통합 관리
 - **모바일·PC 입력 분기** — CNJoystick과 레거시 Input System을 단일 인터페이스로 추상화
 - **복수 씬 플로우** — 프리로딩, 씬 전환, 게임 레디 카운트다운, 스테이지 클리어·게임오버 흐름
 - **인피니트 모드** — 절차적 맵 확장 및 DeathBall 추격 메커니즘
@@ -39,6 +39,9 @@ Unity 5 시대 코드베이스에서 발견한 주요 문제점과 개선 내용
 |---|---|---|
 | 입력 처리 | `PlayerMoveCC` 내부에서 조이스틱·키보드 직접 폴링 | `PlayerInputAdapter`로 분리 — 플랫폼·입력 소스 추상화 |
 | 입력 모드 설정 | `PlayerMoveCC` 내부에서 PlayerPrefs 읽기·CNJoystick 설정 혼재 | `PlayerInputAdapter`의 책임으로 통합 |
+| 리소스 로딩 | `Resources.Load` 동기 로딩 | Addressables 비동기 로딩 (`LoadGameObjectAsync`) |
+| 플레이어 스폰 | `Awake()`에서 동기 로드 | `Start()` 코루틴에서 Addressables 비동기 로드 |
+| 화면 비율 대응 | 배경 카메라 고정 스케일 | `BgCameraFit`으로 화면 비율에 맞게 자동 조정 |
 | `FindObjectOfType` | Unity 6 deprecated API 사용 | `FindAnyObjectByType`으로 전환 |
 
 ### 런타임 버그 수정
@@ -47,6 +50,7 @@ Unity 5 시대 코드베이스에서 발견한 주요 문제점과 개선 내용
 |---|---|---|
 | `OnDestroy` 콜백 | `OnDestoy()` 오타로 콜백 미실행, 싱글턴 참조 미해제 | `OnDestroy()` 수정 |
 | 씬 종료 NullReferenceException | `PlayerMoveCC` / `ReplayGameplay`의 `OnDestroy`에서 파괴 순서 미보장으로 NRE 발생 | `GameRuleManager.instance` null 가드 추가 |
+| 야간 배경 렌더링 | Night 카메라 프리팹의 배경 스프라이트가 레이어 미설정으로 렌더링 안 됨, 넓은 화면에서 잔상 발생 | 레이어 수정 + `BgCameraFit`으로 화면 커버 |
 
 ### 코드 품질 개선
 
@@ -62,8 +66,9 @@ Unity 5 시대 코드베이스에서 발견한 주요 문제점과 개선 내용
 
 | 항목 | 문제 | 수정 |
 |---|---|---|
-| `.gitignore` | `*.dll`, `*.so` 등 전체 제외로 FMOD 등 플러그인 바이너리 미추적 | `Assets/Plugins/**` 예외 처리 추가 |
+| `.gitignore` | 다국어 혼합 템플릿의 패턴으로 플러그인 바이너리 및 `Packages/` 미추적 | Unity 공식 템플릿으로 교체, 플러그인 예외 추가 |
 | `com.unity.ugui` 패키지 | `manifest.json` 누락으로 `UnityEngine.UI` 컴파일 에러 | `manifest.json`에 명시적 추가 |
+| Android 폴더블 대응 | `androidResizeableActivity` 비활성으로 Z Fold 등에서 호환성 창 모드 강제 실행 | 활성화로 폴더블 기기 정상 지원 |
 
 ---
 
@@ -75,19 +80,20 @@ Assets/Scripts/
 │   ├── PlayerMoveCC.cs          # CharacterController 기반 이동 (점프·중력·넉백 포함)
 │   ├── PlayerHealth.cs          # 체력·무적·데미지 처리
 │   ├── PlayerFX.cs              # 이동·착지·자석 이펙트
-│   ├── PlayerSpawn.cs           # 스폰 시퀀스
+│   ├── PlayerSpawn.cs           # Addressables 비동기 스폰 시퀀스
 │   └── Input/
 │       ├── PlayerInputAdapter.cs    # 입력 읽기 + 입력 모드 설정
 │       └── PlayerInputState.cs      # 입력 값 전달 struct
 ├── System/
 │   ├── GameRuleManager.cs       # 게임 상태·타이머·점수·씬 흐름
 │   ├── DataLoadingSystem/
-│   │   ├── BundleManager/       # AssetBundle 로딩
 │   │   ├── ObjectPooler/        # 오브젝트 풀링
-│   │   └── ResourcesManager.cs  # 리소스 로드 중앙화
+│   │   └── ResourcesManager.cs  # Addressables 기반 리소스 로드
 │   └── Sound/
 │       ├── FMODSoundManager.cs  # FMOD 래퍼
 │       └── SoundBoard.cs        # 사운드 ID 기반 재생 인터페이스
+├── Cam/
+│   └── BgCameraFit.cs           # 배경 카메라 화면 비율 자동 대응
 ├── Util/
 │   ├── AnimatorParams.cs        # 애니메이터 파라미터 상수
 │   ├── PrefKeys.cs              # PlayerPrefs 키 상수
@@ -103,4 +109,4 @@ Assets/Scripts/
 
 - `Scripts/Deprecated/` — 이전 버전 스크립트 보존 (일부 활성 코드에서 참조 중)
 - `ExternalAssets/CNControls/` — 서드파티 모바일 조이스틱 (현재 사용 중)
-- `GameRuleManager`가 여러 책임을 보유 — 포트폴리오 범위 내에서 ScoreController 분리는 의존 관계로 인해 보류
+- `GameRuleManager`가 게임 상태·점수·씬 흐름을 통합 관리
