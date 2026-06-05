@@ -252,11 +252,11 @@ $RECYCLE.BIN/
 # Build results
 [Dd]ebug/
 [Rr]elease/
-x64/
-x86/
+/x64/
+/x86/
 [Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
+/[Aa][Rr][Mm]/
+/[Aa][Rr][Mm]64/
 [Bb]in/
 [Oo]bj/
 
