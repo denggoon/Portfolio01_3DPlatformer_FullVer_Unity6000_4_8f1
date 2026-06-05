@@ -83,10 +83,8 @@ public class PurchasedItemEffect : MonoBehaviour {
 	{
 		for(int i=0; i<currentItemFxs.Count; i++)
 		{
-			Debug.Log("ID: " + currentItemFxs[i].item_id + " / " + (int)enumVal);
 			if(currentItemFxs[i].item_id == (int)enumVal)
 			{
-				Debug.Log("Value!: " + currentItemFxs[i].effect_value);
 				return currentItemFxs[i].effect_value;
 			}
 		}

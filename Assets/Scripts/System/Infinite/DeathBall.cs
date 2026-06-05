@@ -18,10 +18,8 @@ public class DeathBall : MonoBehaviour {
 		if (collider.gameObject.layer == LayerMask.NameToLayer ("Player")) { //플레이어인 경우
 //			Debug.LogWarning (">>>>>>>> Death");
 			GameRuleManager.instance.GameOver ();
-		} else 
+		} else
 		{
-			Debug.LogWarning (">>> " + collider.gameObject.tag + "|" + collider.gameObject.layer );
-
 			if (collider.transform.parent.gameObject != null) {
 				Destroy(collider.transform.parent.gameObject);
 //				collider.transform.parent.gameObject.SetActive(false);

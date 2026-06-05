@@ -160,7 +160,6 @@ public class BundleManager : MonoBehaviour
 				platform = "WP8";
 		#else
 				platform = "error";
-				Debug.Log("unsupported platform");
 		#endif
 
 		switch (eBundleMode) 
@@ -201,7 +200,6 @@ public class BundleManager : MonoBehaviour
 	public bool IsManifestLoaded = false;
 	public IEnumerator LoadManifest (string platform) 
 	{
-		Debug.Log( "Loading Manifest");
 		IsManifestLoaded = false;
 
 		statusMsg = "Manifest 파일 로딩중..."; 
@@ -212,7 +210,7 @@ public class BundleManager : MonoBehaviour
 			yield return www.SendWebRequest();
 
 			if (!string.IsNullOrEmpty (www.error)) {
-				Debug.Log (www.error);
+				Debug.LogError(www.error);
 				yield break;
 			}
 
@@ -224,11 +222,8 @@ public class BundleManager : MonoBehaviour
 
 			if (!isReady)
 			{
-				Debug.Log ("There was an error loading manifest");
-				statusMsg = "Manifest 파일을 로드하는데에 문제가 있었습니다."; 
-			}
-			else {
-				Debug.Log ("Manifest loaded successfully");
+				Debug.LogError("There was an error loading manifest");
+				statusMsg = "Manifest 파일을 로드하는데에 문제가 있었습니다.";
 			}
 
 			www.Dispose ();
@@ -262,7 +257,7 @@ public class BundleManager : MonoBehaviour
 		{
 			if(variantRefs[i].bundleName == bundleName)
 			{
-				Debug.Log(string.Format("Variant for {0} cannot be added. {1} already registered. " +
+				Debug.LogWarning(string.Format("Variant for {0} cannot be added. {1} already registered. " +
 				                        "Two vartiants of same bundle cannot be loaded (this is a safety check)", bundleName, variantName));
 				return;
 			}
@@ -350,7 +345,7 @@ public class BundleManager : MonoBehaviour
 			}
 
 			if (!string.IsNullOrEmpty (www.error)) {
-				Debug.Log (www.error);
+				Debug.LogError(www.error);
 				yield break;
 			}
 

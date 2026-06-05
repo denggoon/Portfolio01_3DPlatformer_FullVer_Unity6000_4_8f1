@@ -64,17 +64,12 @@ public class ShaderManager : MonoBehaviour {
 		if (proj == null)
 			return;
 
-		Debug.Log ("Shader Assigning: " + Time.realtimeSinceStartup);
-		
 		for(int j=0; j<shaderList.Length; j++)
 		{
-//			Debug.Log(proj.material.shader.name + " / " +  shaderList[j].name);
 			if(proj.material.shader.name == shaderList[j].name)
 			{
 				proj.material.shader = Shader.Find(proj.material.shader.name);
 			}
 		}
-
-		Debug.Log ("Shader Assigning Done: " + Time.realtimeSinceStartup);
 	}
 }

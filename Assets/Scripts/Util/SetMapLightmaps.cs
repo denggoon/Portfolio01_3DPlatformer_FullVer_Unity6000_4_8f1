@@ -19,7 +19,6 @@ public class SetMapLightmaps : MonoBehaviour {
 
 	public void ApplyLightMap()
 	{
-		Debug.Log ("####SetMapLightmaps - ApplyLightmap!");
 		int maxCount = lightmapFar.Count;
 		if(lightmapNear.Count > maxCount) maxCount = lightmapNear.Count;
 

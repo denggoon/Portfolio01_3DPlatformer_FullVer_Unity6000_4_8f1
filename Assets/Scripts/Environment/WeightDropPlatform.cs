@@ -42,13 +42,13 @@ public class WeightDropPlatform : Trap
 		if(isTriggered == false) return;
 		if(startPoint == null)
 		{
-			Debug.Log("No StartPoint!");
+			Debug.LogError("No StartPoint!");
 			return;
 		}
 
 		if(dropDestination == null)
 		{
-			Debug.Log("No Destination!");
+			Debug.LogError("No Destination!");
 			return;
 		}
 

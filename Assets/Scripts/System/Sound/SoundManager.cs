@@ -182,7 +182,6 @@ public class SoundManager : MonoBehaviour
 			
 			if(MasterBGMAmbientMute == true)
 			{
-				Debug.Log("Master BGM-Ambient Mute is Set by Option Menu. BGM is Still Mute.");
 				source_.mute = true;
 			}
 		}
@@ -197,7 +196,6 @@ public class SoundManager : MonoBehaviour
 		
 			if(MasterBGMAmbientMute == true)
 			{
-				Debug.Log("Master BGM-Ambient Mute is Set by Option Menu. Ambient is Still Mute.");
 				ambient.mute = true;
 			}
 		}

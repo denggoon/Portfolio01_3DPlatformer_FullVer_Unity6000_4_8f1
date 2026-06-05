@@ -50,6 +50,5 @@ public class TimedDamageZone : TriggerStayDamage {
 	public void ToggleDangerous() //애니메이션 호출 방식으로 할경우, 본 함수를 호출하도록 합니다. 
 	{
 		isDangerous = !isDangerous;
-		Debug.Log("ToggleDangerous: " + isDangerous);
 	}
 }

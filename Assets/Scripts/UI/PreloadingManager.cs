@@ -93,7 +93,6 @@ public class PreloadingManager : MonoBehaviour {
 	{
 		float timer = netCheckTimeOut;
 		
-		Debug.Log("Checking Internet Connection...");
 		statusText.text = "인터넷 연결 상태 확인중..."; 
 		while (Application.internetReachability == NetworkReachability.NotReachable && timer > 0) 
 		{

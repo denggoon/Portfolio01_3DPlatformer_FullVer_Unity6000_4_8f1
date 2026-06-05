@@ -16,8 +16,6 @@ public class PlayerAnimEventCaller : AnimatorEventCaller
 
 	public void ToggleCommonFx(int intFlag)
 	{
-		Debug.Log ("ToggleCommonFX");
-
 		bool flag = false;
 
 		if (intFlag == 1)

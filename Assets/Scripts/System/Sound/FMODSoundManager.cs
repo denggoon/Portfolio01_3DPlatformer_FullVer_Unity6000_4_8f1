@@ -18,7 +18,6 @@ public class FMODSoundManager : MonoBehaviour
 
 	void OnDestoy()
 	{
-		Debug.Log ("Destoyed!");
 		StopBGM ();
 		StopCondBGM ();
 		StopAmbient ();
@@ -63,15 +62,9 @@ public class FMODSoundManager : MonoBehaviour
 
         FMOD.RESULT result = fmodLowLvSys.getOutput(out outType);
 
-        Debug.Log("###########Prev FMOD Output Type: " + outType.ToString());
-
         if (Application.platform == RuntimePlatform.Android)
         {
             fmodLowLvSys.setOutput(FMOD.OUTPUTTYPE.OPENSL);
-
-            FMOD.RESULT newResult = fmodLowLvSys.getOutput(out outType);
-
-            Debug.Log("###########New FMOD Output Type: " + outType.ToString());
         }
     }
 

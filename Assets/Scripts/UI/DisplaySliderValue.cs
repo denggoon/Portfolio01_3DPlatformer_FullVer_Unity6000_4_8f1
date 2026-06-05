@@ -20,8 +20,6 @@ public class DisplaySliderValue : MonoBehaviour {
 		{
 			if(sliderRef != null)
 			{
-				Debug.Log(sliderVal);
-				Debug.Log(sliderRef.maxValue);
 				strVal = (sliderVal / sliderRef.maxValue).ToString();
 			}
 

@@ -846,8 +846,4 @@ void LoadSavedValues()
 		}
 	}
 
-	void OnColliderEnter(Collider collision)
-	{
-		Debug.Log (collision.gameObject.name);
-	}
-} 
+}

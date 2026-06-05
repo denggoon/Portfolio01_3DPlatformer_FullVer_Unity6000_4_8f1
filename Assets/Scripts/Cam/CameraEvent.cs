@@ -22,7 +22,6 @@ public class CameraEvent : Trap {
 			GameRuleManager.instance.playerMove.onFreezeEvent = false;
 		}
 
-		Debug.Log ("CamEvent: Trigger: " + this.GetType() + " - " + flag);
 	}
 	// Update is called once per frame
 

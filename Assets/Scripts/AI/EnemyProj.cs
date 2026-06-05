@@ -102,7 +102,6 @@ public class EnemyProj : MonoBehaviour {
 
 			if(enemyMove != null)
 			{
-				Debug.Log("EnemyHit!");
 				enemyMove.Stun(damage); //적 스턴 
 				PushOrDestroy();
 				return;

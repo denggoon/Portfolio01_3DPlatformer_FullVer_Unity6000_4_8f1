@@ -46,9 +46,8 @@ public class BankLoader : MonoBehaviour {
 	
 	IEnumerator BankLoad()
 	{
-		if (File.Exists (commonPath + bankDirectory + "FMOD_bank_list.txt")) 
+		if (File.Exists (commonPath + bankDirectory + "FMOD_bank_list.txt"))
 		{
-			Debug.Log("Local Bank List Exists");
 			statusMsg = "기기에 저장된 뱅크 파일 목록이 존재합니다."; 
 			if(Application.platform == RuntimePlatform.WindowsEditor)
 			{
@@ -60,7 +59,6 @@ public class BankLoader : MonoBehaviour {
 			localFileExists = true;
 			
 		} else {
-			Debug.Log("No Local Bank List, Download.");
 			statusMsg = "기기에 저장된 뱅크 파일 목록이 존재하지 않습니다. 새로 다운로드 합니다."; 
 			downloadPath = webPath;
 			Directory.CreateDirectory (commonPath + bankDirectory);
@@ -102,7 +100,6 @@ public class BankLoader : MonoBehaviour {
 		for (int i=0; i<strBankList.Length-1; i++) 
 		{
 			string strBankName = strBankList[i];
-			Debug.Log("BankName: " + strBankName);
 			
 			if(File.Exists(commonPath + bankDirectory + strBankName) == false)
 			{
@@ -126,7 +123,6 @@ public class BankLoader : MonoBehaviour {
 						statusMsg = "뱅크 파일을 다운로드 받는 도중 문제가 발생했습니다 :" + strBankName + " - " + wwwBank.error; 
 						yield break;  
 					} else {
-						Debug.Log ("Writing " + strBankName + " to: " + commonPath + bankDirectory);
 						File.WriteAllBytes (commonPath + bankDirectory + strBankName, wwwBank.downloadHandler.data);
 					}
 				}

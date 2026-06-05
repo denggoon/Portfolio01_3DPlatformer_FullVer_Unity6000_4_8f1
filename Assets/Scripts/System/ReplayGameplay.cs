@@ -36,10 +36,6 @@ public class ReplayGameplay : MonoBehaviour {
 		GameRuleManager.instance.replayer = this;
 
 //		Debug.Log(">>>>>" + Marshal.SizeOf(typeof(RecordedEvent)) + "bytes" );
-		Debug.Log ("A Vector3 Uses " + Marshal.SizeOf(typeof(Vector3)) +" bytes");
-		Debug.Log ("A Quaternion Uses " + Marshal.SizeOf(typeof(Quaternion)) +" bytes");
-		Debug.Log ("A float Uses " + Marshal.SizeOf(typeof(float)) +" bytes");
-
 		animator = GetComponent<Animator> ();
 
         idleHash = animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
