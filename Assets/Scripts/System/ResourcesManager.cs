@@ -31,7 +31,7 @@ public class ResourcesManager : MonoBehaviour {
 		}
 	}
 
-	void OnDestoy()
+	void OnDestroy()
 	{
 		instance_ = null;
 	}

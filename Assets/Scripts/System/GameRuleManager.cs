@@ -32,7 +32,7 @@ public class GameRuleManager : MonoBehaviour {
 	public Vector3 initPos;
 	public Quaternion initRot;
 
-	void OnDestoy()
+	void OnDestroy()
 	{
 		instance_ = null;
 	}
