@@ -50,7 +50,7 @@ public class BundleManager : MonoBehaviour
 
 	public BUNDLE_LOAD_MODE eBundleMode = BUNDLE_LOAD_MODE.EDITOR_LOCAL;
 
-	string webPath;
+	[SerializeField] private string webPath = "";
 	string persistentPath;
 	string streamingPath;
 	string localPath;
@@ -88,8 +88,6 @@ public class BundleManager : MonoBehaviour
 		instance_ = this;
 		
 		DontDestroyOnLoad (gameObject);
-
-		webPath = "http://192.168.1.56/bundles/assetbundles/";
 
 		persistentPath = Application.persistentDataPath + "/bundles/";
 		streamingPath = Application.streamingAssetsPath + "/bundles/";
