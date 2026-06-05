@@ -1,74 +1,81 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
-using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
-public class SceneLoader : MonoBehaviour 
+public class SceneLoader : MonoBehaviour
 {
-	[SerializeField] string bundleName;
-	[SerializeField] string sceneName;
-	[SerializeField] string optionalVariantBundle;
-	[SerializeField] string optionalVariantName;
+    [SerializeField] private string sceneName;
 
-	public bool useBundle = false;
-	public bool isComplete;
-	public string statusMsg;
-	public float progress;
+    // true: Addressables로 씬 로드 / false: SceneManager 직접 로드 (폴백)
+    public bool useAddressables = true;
 
-	void Awake()
-	{
-		this.enabled = false;
-	}
+    public bool isComplete;
+    public string statusMsg;
+    public float progress;
 
-	void Update()
-	{
-		PreSceneDataLoader.instance.uiTxtProgress.text = statusMsg;
-	}
+    void Awake()
+    {
+        this.enabled = false;
+    }
 
-	public IEnumerator Execute () 
-	{
-		this.enabled = true;
-		sceneName = PlayerPrefs.GetString(PrefKeys.LoadingSceneName);
+    void Update()
+    {
+        PreSceneDataLoader.instance.uiTxtProgress.text = statusMsg;
+    }
 
-		BundleManager.instance.currentSceneName = sceneName;
+    public IEnumerator Execute()
+    {
+        this.enabled = true;
+        sceneName = PlayerPrefs.GetString(PrefKeys.LoadingSceneName);
 
-		if (useBundle) 
-		{
-			bundleName = sceneName.ToLower();
+        if (useAddressables)
+        {
+            yield return StartCoroutine(LoadSceneAddressable(sceneName));
+        }
+        else
+        {
+            yield return StartCoroutine(LoadSceneDirect(sceneName));
+        }
 
-			if (!string.IsNullOrEmpty (optionalVariantBundle) && !string.IsNullOrEmpty (optionalVariantName))
-				BundleManager.instance.RegisterVariant (optionalVariantBundle, optionalVariantName);
+        isComplete = true;
+        this.enabled = false;
+    }
 
-			while (!BundleManager.instance.isReady)
-				yield return null;
+    private IEnumerator LoadSceneAddressable(string address)
+    {
+        var handle = Addressables.LoadSceneAsync(address, LoadSceneMode.Single);
 
-			yield return StartCoroutine(BundleManager.instance.LoadBundleCoroutine (bundleName));
-		}
+        while (!handle.IsDone)
+        {
+            progress = handle.PercentComplete * 100F;
+            statusMsg = "스테이지 로딩중:" + address + "(" + Mathf.RoundToInt(progress) + "%)";
+            yield return null;
+        }
 
+        if (handle.Status != AsyncOperationStatus.Succeeded)
+        {
+            Debug.LogError("SceneLoader: Addressables 씬 로드 실패 — " + address + ". 직접 로드로 폴백.");
+            yield return StartCoroutine(LoadSceneDirect(address));
+        }
+    }
 
+    private IEnumerator LoadSceneDirect(string name)
+    {
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            SceneManager.LoadScene(name);
+            yield break;
+        }
 
-		if (Application.platform == RuntimePlatform.IPhonePlayer) 
-		{
-			SceneManager.LoadScene(sceneName);
-
-		} else {
-
-			AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName);
-		
-			do {  
-				float sceneProgress = sceneAsync.progress * 100F;
-				progress = sceneProgress;
-				
-				int scenePRounded = Mathf.RoundToInt (sceneProgress);
-				
-				statusMsg = "스테이지 로딩중:" + sceneName + "(" + scenePRounded + "%)"; 
-				yield return null;  
-				
-			} while(!sceneAsync.isDone);  
-
-		}
-
-//		BundleManager.instance.Unload (bundleName);
-		this.enabled = false;
-	}
+        AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(name);
+        do
+        {
+            progress = sceneAsync.progress * 100F;
+            statusMsg = "스테이지 로딩중:" + name + "(" + Mathf.RoundToInt(progress) + "%)";
+            yield return null;
+        } while (!sceneAsync.isDone);
+    }
 }

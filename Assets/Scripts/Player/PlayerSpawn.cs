@@ -1,63 +1,55 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class PlayerSpawn : MonoBehaviour {
+public class PlayerSpawn : MonoBehaviour
+{
+    new public Transform transform;
 
-	new public Transform transform;
+    public string playerObjStr;
+    public string spawnFxObjStr;
+    public string closeFxObjStr;
 
-	public string playerObjStr;
-	public string spawnFxObjStr;
-	public string closeFxObjStr;
+    [SerializeField]
+    private GameObject playerObj;
 
-	[SerializeField]
-	private GameObject playerObj;
+    public float spawnDelayTime;
+    public float destroyDelayTime;
 
-	public float spawnDelayTime;
-	public float destroyDelayTime;
-	// Use this for initialization
-	void Awake()
-	{
-		if (playerObj == null) 
-		{
-			playerObj = ResourcesManager.instance.LoadGameObject (playerObjStr);
-		}
+    void Awake()
+    {
+        transform = GetComponent<Transform>();
+    }
 
-		transform = GetComponent<Transform>();
-	}
+    IEnumerator Start()
+    {
+        // Addressables를 통한 비동기 로드 — 코루틴에서 yield로 대기하여 프레임 히치 없이 로드
+        yield return ResourcesManager.instance.LoadGameObjectAsync(playerObjStr, obj => playerObj = obj);
 
-	IEnumerator Start () 
-	{
-		yield return new WaitForSeconds(spawnDelayTime);
+        yield return new WaitForSeconds(spawnDelayTime);
 
-		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard(SoundID.FX_PortalSpawn, this.transform.position);
+        if (SoundBoard.instance != null)
+            SoundBoard.instance.PlayFromSoundBoard(SoundID.FX_PortalSpawn, this.transform.position);
 
-		ResourcesManager.instance.PopEffect (spawnFxObjStr, this.transform.position);
+        ResourcesManager.instance.PopEffect(spawnFxObjStr, this.transform.position);
 
-		GameObject.Instantiate(playerObj, this.transform.position, this.transform.rotation);
+        if (playerObj != null)
+            GameObject.Instantiate(playerObj, this.transform.position, this.transform.rotation);
 
-		playerObj = null;
+        playerObj = null;
 
-		float timer = GameRuleManager.instance.gameReadyTimer;
+        float timer = GameRuleManager.instance.gameReadyTimer;
+        yield return new WaitForSeconds(timer >= 1F ? GameRuleManager.instance.gameReadyCount - 1F : 1F);
 
-		if(timer >= 1F)
-		{
-			yield return new WaitForSeconds(GameRuleManager.instance.gameReadyCount -1F);
-		} else {
-			yield return new WaitForSeconds(1F);
-		}
+        WarpClose();
+    }
 
-		WarpClose();
-	}
+    public void WarpClose()
+    {
+        if (SoundBoard.instance != null)
+            SoundBoard.instance.PlayFromSoundBoard(SoundID.FX_PortalDespawn, this.transform.position);
 
-	public void WarpClose()
-	{
-		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard(SoundID.FX_PortalDespawn, this.transform.position);
+        ResourcesManager.instance.PopEffect(closeFxObjStr, this.transform.position);
 
-		ResourcesManager.instance.PopEffect (closeFxObjStr, this.transform.position);
-
-		Destroy(this.gameObject, destroyDelayTime);
-
-	}
+        Destroy(this.gameObject, destroyDelayTime);
+    }
 }

@@ -1,147 +1,153 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class ResourcesManager : MonoBehaviour {
+public class ResourcesManager : MonoBehaviour
+{
+    private static ResourcesManager instance_;
 
-	private static ResourcesManager instance_;
-	
-	public static ResourcesManager instance
-	{
-		get
-		{
-			if(instance_ == null)
-			{
-				GameObject resourcesManagerObj = new GameObject("_ResourcesManager");
-				Transform resourcesManagerTrans = resourcesManagerObj.GetComponent<Transform>();
+    public static ResourcesManager instance
+    {
+        get
+        {
+            if (instance_ == null)
+            {
+                GameObject obj = new GameObject("_ResourcesManager");
 
-				GameObject bundleManagerObj = GameObject.Find("_BundleManager");
+                GameObject bundleManagerObj = GameObject.Find("_BundleManager");
+                if (bundleManagerObj != null)
+                    obj.transform.SetParent(bundleManagerObj.transform);
 
-				if(bundleManagerObj != null)
-				{
-					Transform bundleManagerTrans = bundleManagerObj.GetComponent<Transform>();
+                instance_ = obj.AddComponent<ResourcesManager>();
+            }
+            return instance_;
+        }
+    }
 
-					resourcesManagerTrans.SetParent(bundleManagerTrans);
-				}
+    void Awake()
+    {
+        instance_ = this;
+    }
 
-				instance_ = resourcesManagerObj.AddComponent<ResourcesManager>();
-			}
+    void OnDestroy()
+    {
+        ClearCache();
+        instance_ = null;
+    }
 
-			return instance_;
-		}
-	}
+    private Dictionary<string, AsyncOperationHandle<GameObject>> _goHandleCache =
+        new Dictionary<string, AsyncOperationHandle<GameObject>>();
 
-	void OnDestroy()
-	{
-		instance_ = null;
-	}
+    // 동기 로드 (WaitForCompletion) — 호환성 유지용.
+    // 대용량 에셋에서는 프레임 히치 발생 가능. 가능하면 LoadGameObjectAsync 사용 권장.
+    public GameObject LoadGameObject(string address)
+    {
+        if (_goHandleCache.TryGetValue(address, out var cached) && cached.IsValid())
+            return cached.Result;
 
-	public bool useAssetBundle = false;
-//	private float globalframeTimeOut = 100F;
+        var handle = Addressables.LoadAssetAsync<GameObject>(address);
+        var result = handle.WaitForCompletion();
 
-	void Awake()
-	{
-		instance_ = this;
-	}
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            _goHandleCache[address] = handle;
+            return result;
+        }
 
-	public void PopEffect(GameObject fxObj, Vector3 pos)
-	{
-		PopEffect (fxObj.name, pos);
-	}
+        Addressables.Release(handle);
+        return null;
+    }
 
-	public void PopEffect(string fxName, Vector3 pos)
-	{
-		GameObject loadedObj = null;
-		
-		if (ObjectPooler.instance != null) 
-		{
-			loadedObj = ObjectPooler.instance.ObjPop (fxName, pos);
-		}
-		
-		if(loadedObj == null)
-		{
-			loadedObj = LoadGameObject("fxs/" + fxName);
-			
-			if(loadedObj != null)
-			{
-				GameObject.Instantiate(loadedObj, pos, loadedObj.transform.rotation);
-			}
-		}
-	}
+    // 비동기 로드 — 코루틴 기반. PlayerSpawn 등 이미 코루틴인 흐름에서 사용.
+    public IEnumerator LoadGameObjectAsync(string address, System.Action<GameObject> onLoaded)
+    {
+        if (_goHandleCache.TryGetValue(address, out var cached) && cached.IsValid())
+        {
+            onLoaded?.Invoke(cached.Result);
+            yield break;
+        }
 
-	public void AttachEffect(string fxName, Transform parent)
-	{
-		GameObject loadedObj = null;
-		GameObject attatchFx = null;
-		
-		if (ObjectPooler.instance != null) 
-		{
-			loadedObj = ObjectPooler.instance.ObjPop (fxName, parent.position);
+        var handle = Addressables.LoadAssetAsync<GameObject>(address);
+        yield return handle;
 
-			attatchFx =  loadedObj;
-		}
-		
-		if(loadedObj == null)
-		{
-			loadedObj = LoadGameObject("fxs/" + fxName);
-			
-			if(loadedObj != null)
-			{
-				attatchFx = GameObject.Instantiate(loadedObj, parent.position, parent.rotation) as GameObject;
-			}
-		}
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            _goHandleCache[address] = handle;
+            onLoaded?.Invoke(handle.Result);
+        }
+        else
+        {
+            Addressables.Release(handle);
+            onLoaded?.Invoke(null);
+        }
+    }
 
-		attatchFx.transform.SetParent(parent);
-	}
+    public void PopEffect(GameObject fxObj, Vector3 pos) => PopEffect(fxObj.name, pos);
 
-	public AudioClip LoadAudioClip(string path)
-	{
-		return (AudioClip)ResourcesLoadCached(path);
-	}
+    public void PopEffect(string fxName, Vector3 pos)
+    {
+        if (ObjectPooler.instance != null)
+        {
+            var pooled = ObjectPooler.instance.ObjPop(fxName, pos);
+            if (pooled != null) return;
+        }
 
-	public GameObject LoadGameObject(string path)
-	{
-		string[] pathArray = path.Split ('/');
-		
-		GameObject obj = null;
-		
-		if (useAssetBundle) 
-		{
-			if(pathArray.Length > 0)
-			{
-				obj = (GameObject)BundleManager.instance.GetAssetFromLoadedBundle (path, pathArray [pathArray.Length-1]);
-			} else {
-				obj = (GameObject)BundleManager.instance.GetAssetFromLoadedBundle (path, pathArray [0]);
-			}
-		}
-		
-		if (obj == null) 
-		{
-			obj = (GameObject)ResourcesLoadCached(path);
-		}
+        var obj = LoadGameObject("fxs/" + fxName);
+        if (obj != null)
+            GameObject.Instantiate(obj, pos, obj.transform.rotation);
+    }
 
-		return obj;
-	}
+    public void AttachEffect(string fxName, Transform parent)
+    {
+        GameObject loadedObj = null;
+        GameObject attachFx = null;
 
-	private Dictionary<string, Object> resourceCache = new Dictionary<string, Object>();
-	public Object ResourcesLoadCached(string path)
-	{
-		Object resourceObj = null;
-		if (!resourceCache.TryGetValue (path, out resourceObj)) 
-		{
-			resourceObj = Resources.Load<Object> (path);
-			if (resourceObj != null) 
-			{
-				resourceCache.Add (path, resourceObj);
-			}
-		}
+        if (ObjectPooler.instance != null)
+        {
+            loadedObj = ObjectPooler.instance.ObjPop(fxName, parent.position);
+            attachFx = loadedObj;
+        }
 
-		return resourceObj;
-	}
+        if (loadedObj == null)
+        {
+            loadedObj = LoadGameObject("fxs/" + fxName);
+            if (loadedObj != null)
+                attachFx = GameObject.Instantiate(loadedObj, parent.position, parent.rotation);
+        }
 
-	public void ClearCache()
-	{
-		resourceCache.Clear ();
-		Resources.UnloadUnusedAssets ();
-	}
+        if (attachFx != null)
+            attachFx.transform.SetParent(parent);
+    }
+
+    public AudioClip LoadAudioClip(string address)
+    {
+        var handle = Addressables.LoadAssetAsync<AudioClip>(address);
+        var result = handle.WaitForCompletion();
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+            return result;
+        Addressables.Release(handle);
+        return null;
+    }
+
+    public Object ResourcesLoadCached(string address)
+    {
+        var handle = Addressables.LoadAssetAsync<Object>(address);
+        var result = handle.WaitForCompletion();
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+            return result;
+        Addressables.Release(handle);
+        return null;
+    }
+
+    public void ClearCache()
+    {
+        foreach (var handle in _goHandleCache.Values)
+        {
+            if (handle.IsValid())
+                Addressables.Release(handle);
+        }
+        _goHandleCache.Clear();
+    }
 }

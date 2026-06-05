@@ -67,93 +67,45 @@ public class ObjectPooler : MonoBehaviour {
 		transform = GetComponent<Transform> ();
 	}
 	
+	// Addressables를 통해 lstObjInfo에 등록된 에셋을 비동기로 로드하여 풀을 초기화
 	public IEnumerator Initialze()
 	{
-		AssetBundleManifest manifest = BundleManager.instance.manifest;
+		for (int i = 0; i < lstObjInfo.Count; i++)
+		{
+			string address = lstObjInfo[i].objName;
+			int count = lstObjInfo[i].poolAmount;
 
-		if (manifest != null) {
-			for (int j=0; j<poolKeywords.Length; j++) {
-				ImportManifest (manifest, poolKeywords [j]);
-			}
+			GameObject prefab = null;
+			yield return ResourcesManager.instance.LoadGameObjectAsync(address, obj => prefab = obj);
 
-			for (int i=0; i< lstObjInfo.Count; i++) 
-			{
-				yield return StartCoroutine(BundleManager.instance.LoadBundleCoroutine(lstObjInfo[i].objName));
-				PrepareObjStk (lstObjInfo [i].objName, lstObjInfo [i].poolAmount);
-			}
-
-		} else {
-			Debug.LogError("Initialize: BundleManager's manifest not loaded");
-			yield break;
+			if (prefab != null)
+				PrepareObjStk(address, count, prefab);
+			else
+				Debug.LogError("ObjectPooler: 에셋 로드 실패 — " + address);
 		}
 
 		IsPoolerInitialized = true;
-
 	}
 
-	public void ImportManifest(AssetBundleManifest manifest, string category)
+	private Dictionary<string, ObjStkInfo> dicStkInfo = new Dictionary<string, ObjStkInfo>();
+	public void PrepareObjStk(string name, int count, GameObject prefab)
 	{
-		bool categoryExists = false;
+		GameObject poolParentObj = new GameObject("Pool_" + name);
+		Stack<GameObject> stkPool = new Stack<GameObject>();
+		Transform poolParentTrans = poolParentObj.GetComponent<Transform>();
+		poolParentTrans.SetParent(this.transform);
 
-		for(int j=0; j<lstObjInfo.Count; j++)
+		for (int i = 0; i < count; i++)
 		{
-			if(lstObjInfo[j].objName.Contains(category))
-			{
-				categoryExists = true;
-				break;
-			}
+			GameObject poolObj = GameObject.Instantiate(prefab, Vector3.zero, prefab.transform.rotation);
+			poolObj.name = name;
+			poolObj.SetActive(false);
+			poolObj.GetComponent<Transform>().SetParent(poolParentTrans);
+			PushObjInStk(poolObj, stkPool);
 		}
 
-		if (categoryExists) 
-		{
-			Debug.LogWarning("ImportManifest: category [" + category + "] already exists in objInfo.");
-
-		} else {
-
-			string[] bundleNames = manifest.GetAllAssetBundles ();
-
-			for (int i=0; i<bundleNames.Length; i++) 
-			{
-				Debug.LogWarning("ImportManifest: " + bundleNames[i]);
-				if (bundleNames[i].Contains (category)) 
-				{
-					ObjPoolInfo poolInfo = new ObjPoolInfo (bundleNames[i], presetCount);
-					lstObjInfo.Add (poolInfo);
-				}
-			}
-		}
-	}
-	
-	private Dictionary<string, ObjStkInfo> dicStkInfo = new Dictionary<string, ObjStkInfo>(); 
-	public void PrepareObjStk(string name, int count) 
-	{ 
-		Debug.LogError ("PrepreObjStk");
-		GameObject poolParentObj = new GameObject("Pool_"+name); 
-		Stack<GameObject> stkPool = new Stack<GameObject>(); 
-
-		Transform poolParentTrans = poolParentObj.GetComponent<Transform> ();
-
-		poolParentTrans.SetParent (this.transform);
-		
-		for(int i=0; i<count; i++) 
-		{ 
-			GameObject loadedObj = ResourcesManager.instance.LoadGameObject(name);
-			if(loadedObj != null )
-			{
-				GameObject poolObj = GameObject.Instantiate(loadedObj, Vector3.zero, loadedObj.transform.rotation) as GameObject;
-				Transform poolObjTrans = poolObj.GetComponent<Transform>();
-
-				poolObj.name = name;
-				poolObj.SetActive(false);
-				poolObjTrans.SetParent(poolParentTrans);
-				PushObjInStk(poolObj, stkPool); 
-			}
-		} 
-
-		ObjStkInfo stkInfo = new ObjStkInfo (poolParentObj, stkPool);
-		AddStkInfoDic(name, stkInfo); 
-
-		BundleManager.instance.Unload (name);
+		ObjStkInfo stkInfo = new ObjStkInfo(poolParentObj, stkPool);
+		AddStkInfoDic(name, stkInfo);
 	} 
 
 	public bool AddStkInfoDic(string name , ObjStkInfo stkInfo) 
@@ -180,12 +132,8 @@ public class ObjectPooler : MonoBehaviour {
 	
 	public GameObject ObjPop(string name, Vector3 popPos, bool autoActive = true) 
 	{ 
-		if (IsPoolerInitialized == false) 
-		{
-			GameObject loadedObj = ResourcesManager.instance.LoadGameObject(name);
-
-			return loadedObj;
-		}
+		if (IsPoolerInitialized == false)
+			return null;
 
 		GameObject objToPop  = null; 
 		if(dicStkInfo.ContainsKey(name)) 
@@ -237,24 +185,7 @@ public class ObjectPooler : MonoBehaviour {
 //			Debug.Log("ObjPop: Obj [" + name + "] does not exist in dictionary, try with lower case: " + name.ToLower());
 			if(ObjPop(name.ToLower(), popPos) == null) //try with lower case 
 			{
-				Debug.LogError("ObjPop: Obj [" + name + "] does not exist in dictionary, loads from resourcesManager");
-
-				GameObject loadedObj = ResourcesManager.instance.LoadGameObject(name);
-				
-				if(loadedObj != null)
-				{
-					objToPop = GameObject.Instantiate(loadedObj, popPos, loadedObj.transform.rotation) as GameObject;
-
-					if(objToPop != null) 
-					{ 
-						objToPop.name = name; 
-						
-						if(autoActive)
-							objToPop.SetActive(true);
-						
-						return objToPop; 
-					}
-				}
+				Debug.LogError("ObjPop: Obj [" + name + "] does not exist in dictionary, returning null.");
 			}
 		}
 

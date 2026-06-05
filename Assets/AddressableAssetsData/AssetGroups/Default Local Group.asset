@@ -1,0 +1,263 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: 53d673042d946a345a6f7bacae46817f
+  m_SerializeEntries:
+  - m_GUID: 08d0cc32e6558cc4aa80fffb84591536
+    m_Address: fxs/Fx_DownPlatform_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12df0c18e23b2534999389a621916d93
+    m_Address: item/D_I_001_GoldDroppable
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1622a01498d9e5546b5e3d2aad6cf292
+    m_Address: fxs/Fx_00_Test
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a226a8c6cfe5df418fd58bfbbd589c6
+    m_Address: fxs/Fx_Dust_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2293e77fae3b349498e465bfff5dc2dd
+    m_Address: fxs/Fx_Landing_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c954159a620c8a4d809f5761e5c9ef5
+    m_Address: players/Line_BROWN
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 307ccfe37917eac4cb468f9e941f8e56
+    m_Address: players/Kakao_NEO
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 351d8955713797d4f9356cae183629da
+    m_Address: fxs/Fx_Cannon_start
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a574a63d327abd49bc092ac86b1c718
+    m_Address: D_R_M_002_Bo_Bomb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 426cc7e8830c6e04980abc9bc3747fec
+    m_Address: fxs/Fx_Sparkling_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 458a161ed770d8744917b3fd021fcebf
+    m_Address: fxs/Fx_M_Die_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46eb7a82429346e4abf91a74adbcbf8f
+    m_Address: 3_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e296bd02ac2412489cc2f42580cb3cc
+    m_Address: 1_5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 581a7c6640b929d44be78f369e022b90
+    m_Address: fxs/FX_Sunlight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69c7cb32fa7ab7f46a62e2ac0590bc10
+    m_Address: Infinite_0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a239adcdcc091b40aa3aec64240e69b
+    m_Address: fxs/Fx_Falling_P_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a458ec2602c9934b8c8f7aa6adeb601
+    m_Address: fxs/Fx_Bomb_end
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76b59cb3e9937d54a8ccd8b9a9fc083e
+    m_Address: fxs/FX_Sandstem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7787296d60821c6429153c313da64d3d
+    m_Address: 1_6
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b4e7d3dd7b9a874a846747827fa752e
+    m_Address: item/exitprefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 806cc7d4d3cdc49adaca29ba88b7d324
+    m_Address: alpha_infinite
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84730cf4f45d2f94e9427f4b238b59d3
+    m_Address: fxs/Fx_PatternBox_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d11d700458c9af4b89c0621aaa2d189
+    m_Address: 1_3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9676ccbd1c11af84ab6840bdf982b7a9
+    m_Address: fxs/Fx_Square_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b0da75e4d5bd9e40890047df8c910d6
+    m_Address: 1_8
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f801facbcd56f44183750a3d99ae485
+    m_Address: 1_4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a17c454d7d76ed04ba213704920b198a
+    m_Address: fxs/Fx_JumpAttack_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a44269787611d4a46b0123bc86ea078e
+    m_Address: 1_7
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5fca39bf75f5fe47a76d89b85574811
+    m_Address: fxs/Fx_Cannon_end
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a67b6bacca4946840ab3711b617f419b
+    m_Address: PurchasedItemBalance
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2b377b0bf07deb428f83257ec1b1822
+    m_Address: alpha_1_1_SoundTest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b313e4538976be24ead5fd49adf44708
+    m_Address: fxs/Fx_Bomb_start
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3d8534ad1e4e284d93c8b71b2cc1ac5
+    m_Address: 2_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7394c6d04cfbb44c92714d3cf6e4dd6
+    m_Address: fxs/Fx_PC_Hit_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b90ada99eba88c447a63859c179d3aea
+    m_Address: fxs/FX_Cave_Firefly
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc77babd5c80a384088fcc69a631af42
+    m_Address: fxs/Fx_Landing_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0210569e0fbdfe41bc47ada2841844a
+    m_Address: players/P_001_TT
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c27c02c412a81514ba885f00e974465b
+    m_Address: item/droppablegold
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4667dd515a1245438e9daf0c194f4d8
+    m_Address: SoundData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7b0b7afa70937c42b17f40ead9d0290
+    m_Address: players/Kakao_MUZI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7e6cc5184d4f834d9a20d9b6580618f
+    m_Address: item/startprefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e38a4ba3de42abf4db8247b0c991f3bf
+    m_Address: 1_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb9901d832540e740aa49f1beb77b42c
+    m_Address: fxs/Fx_Button_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f04bba95055949e4aae76459f0e89579
+    m_Address: D_R_G_012_Cannon_Bomb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f485b6659e6276e46bb62bd5fecd88df
+    m_Address: 2_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f556c53cfec07cf4cb46f9dcc4e72e8f
+    m_Address: 1_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: faf444f8b8a14514ca55af1f06117c8e
+    m_Address: D_M_001_Mo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdea4138c6dec8a4a9cab258fc61c402
+    m_Address: players/Test_TT
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 763c8cd6e834d9645b91f64e2f5fc18a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a6f5555151670f1468b19d3cc76bbecd, type: 2}
+    - {fileID: 11400000, guid: 14b0c27b47ddd3345bcbecf572dbecf2, type: 2}

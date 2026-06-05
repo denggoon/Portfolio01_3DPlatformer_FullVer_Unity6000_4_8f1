@@ -68,22 +68,10 @@ public class PreloadingManager : MonoBehaviour {
 
 	IEnumerator PhaseTwo()
 	{
-//		yield return StartCoroutine (LoadAssetBundles ()); //commented on 15-11-13
-//
-//		if (!assetLoadingComplete) 
-//		{
-//			UIPopupMsgManager.instance.PopQuestion 
-//				("에셋을 로드해오는데 실패하였습니다. 재시도합니까? 사유: " + strBundleFailReason,
-//				 () => StartPhaseTwo (),
-//				 () => UIPopupMsgManager.instance.PopMessage ("확인을 눌러 프로그램을 종료합니다", () => Application.Quit ()));
-//			
-//			yield break;
-//		}
-
 		statusFine = true;
 
 		UITimelineManager.instance.ExecuteTask ();
-		statusText.text = "시작하려면 화면을 터치하세요."; 
+		statusText.text = "시작하려면 화면을 터치하세요.";
 
 		yield return null;
 	}
