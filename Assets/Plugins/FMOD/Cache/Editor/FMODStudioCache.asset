@@ -43,7 +43,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/banks/Amb2D_00.bank
   Name: banks/Amb2D_00
   StudioPath: bank:/Amb2D_00
-  lastModified: 639154338181658726
+  lastModified: 639162570864833479
   FileSizes: []
   Exists: 1
 --- !u!114 &-9094027769585986975
@@ -502,7 +502,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FX_Object_00.bank
   Name: FX_Object_00
   StudioPath: bank:/FX_Object_00
-  lastModified: 639154338180443619
+  lastModified: 639162570863499415
   FileSizes: []
   Exists: 1
 --- !u!114 &-5838102374330814295
@@ -1119,7 +1119,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/Music_00.bank
   Name: Music_00
   StudioPath: bank:/Music_00
-  lastModified: 639154338181508716
+  lastModified: 639162570864593083
   FileSizes: []
   Exists: 1
 --- !u!114 &-2186987244328388203
@@ -1165,7 +1165,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/banks/Amb3D_00.bank
   Name: banks/Amb3D_00
   StudioPath: bank:/Amb3D_00
-  lastModified: 639154338181678714
+  lastModified: 639162570864893563
   FileSizes: []
   Exists: 1
 --- !u!114 &-2027976947296603085
@@ -1356,7 +1356,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/Amb3D_00.bank
   Name: Amb3D_00
   StudioPath: bank:/Amb3D_00
-  lastModified: 639154338180343615
+  lastModified: 639162570863344340
   FileSizes: []
   Exists: 1
 --- !u!114 &-611453401344382020
@@ -1643,7 +1643,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 2571508344506549258}
   cacheVersion: 131859
-  cacheTime: 639154338182813867
+  cacheTime: 639162570866210211
   SerializableEventsDict:
   - key: event:/Amb2D/SkyIsland_Night
     index: 0
@@ -1844,7 +1844,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/banks/Music_00.bank
   Name: banks/Music_00
   StudioPath: bank:/Music_00
-  lastModified: 639154338182783836
+  lastModified: 639162570866114341
   FileSizes: []
   Exists: 1
 --- !u!114 &698275799106862974
@@ -1880,7 +1880,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/UIS_00.bank
   Name: UIS_00
   StudioPath: bank:/UIS_00
-  lastModified: 639154338181548712
+  lastModified: 639162570864663084
   FileSizes: []
   Exists: 1
 --- !u!114 &764456809822466043
@@ -2308,7 +2308,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/UIS_00.strings.bank
   Name: UIS_00.strings
   StudioPath: bank:/UIS_00.strings
-  lastModified: 639154338181548712
+  lastModified: 639162570864703095
   FileSizes:
   - Name: 
     Value: 3858
@@ -2580,7 +2580,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/banks/FX_Object_00.bank
   Name: banks/FX_Object_00
   StudioPath: bank:/FX_Object_00
-  lastModified: 639154338181778712
+  lastModified: 639162570865065863
   FileSizes: []
   Exists: 1
 --- !u!114 &4783353617613839624
@@ -2690,7 +2690,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/Amb2D_00.bank
   Name: Amb2D_00
   StudioPath: bank:/Amb2D_00
-  lastModified: 639154338180313608
+  lastModified: 639162570863294717
   FileSizes: []
   Exists: 1
 --- !u!114 &5403777933005143021
@@ -2866,7 +2866,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/banks/FX_PC_00.bank
   Name: banks/FX_PC_00
   StudioPath: bank:/FX_PC_00
-  lastModified: 639154338181798720
+  lastModified: 639162570865105886
   FileSizes: []
   Exists: 1
 --- !u!114 &5980583029647885103
@@ -3095,7 +3095,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FX_Mon_00.bank
   Name: FX_Mon_00
   StudioPath: bank:/FX_Mon_00
-  lastModified: 639154338180373615
+  lastModified: 639162570863394364
   FileSizes: []
   Exists: 1
 --- !u!114 &6711417944325494929
@@ -3309,7 +3309,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FX_PC_00.bank
   Name: FX_PC_00
   StudioPath: bank:/FX_PC_00
-  lastModified: 639154338180463612
+  lastModified: 639162570863539403
   FileSizes: []
   Exists: 1
 --- !u!114 &7461932385530081773
@@ -3355,7 +3355,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/banks/FX_Mon_00.bank
   Name: banks/FX_Mon_00
   StudioPath: bank:/FX_Mon_00
-  lastModified: 639154338181718711
+  lastModified: 639162570864977359
   FileSizes: []
   Exists: 1
 --- !u!114 &7830049031136822597
@@ -3549,7 +3549,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/banks/UIS_00.bank
   Name: banks/UIS_00
   StudioPath: bank:/UIS_00
-  lastModified: 639154338182803859
+  lastModified: 639162570866174358
   FileSizes: []
   Exists: 1
 --- !u!114 &9099843311106712644
