@@ -221,6 +221,16 @@ output.json
 *.sln
 *.suo
 
+# Unity 플러그인 바이너리 예외 (위의 *.dll 등 C/C++ 패턴을 재정의)
+!Assets/Plugins/**/*.dll
+!Assets/Plugins/**/*.so
+!Assets/Plugins/**/*.so.*
+!Assets/Plugins/**/*.a
+!Assets/Plugins/**/*.jar
+!Assets/Plugins/**/*.dylib
+!Assets/_Arts/**/*.dll
+!Assets/_Arts/_Prototype/**/*.unitypackage
+
 ### Windows
 # Windows thumbnail cache files
 Thumbs.db
