@@ -344,16 +344,6 @@ Debug.Log("Uploaded replay data!");
         {
             shadowModel = ResourcesManager.instance.LoadGameObject("Shadow_TT");
         }
-        else
-        if (modelName.Contains("MUZI"))
-        {
-            shadowModel = ResourcesManager.instance.LoadGameObject("Shadow_MUZI");
-        }
-        else 
-        if(modelName.Contains("BROWN"))
-        {
-            shadowModel = ResourcesManager.instance.LoadGameObject("Shadow_BROWN");
-        }
 
         return shadowModel;
     }

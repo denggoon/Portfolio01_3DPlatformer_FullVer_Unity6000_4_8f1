@@ -40,16 +40,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2c954159a620c8a4d809f5761e5c9ef5
-    m_Address: players/Line_BROWN
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 307ccfe37917eac4cb468f9e941f8e56
-    m_Address: players/Kakao_NEO
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 351d8955713797d4f9356cae183629da
     m_Address: fxs/Fx_Cannon_start
     m_ReadOnly: 0
@@ -207,11 +197,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c4667dd515a1245438e9daf0c194f4d8
     m_Address: SoundData
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c7b0b7afa70937c42b17f40ead9d0290
-    m_Address: players/Kakao_MUZI
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
