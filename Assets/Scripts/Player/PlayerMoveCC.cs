@@ -198,46 +198,46 @@ public class PlayerMoveCC : MonoBehaviour
 
 public void RegisterDefaultValues()
 	{
-		if(PlayerPrefs.HasKey("DefaultSpeed"))
+		if(PlayerPrefs.HasKey(PrefKeys.DefaultSpeed))
 		{
-			this.speed = PlayerPrefs.GetFloat("DefaultSpeed");
+			this.speed = PlayerPrefs.GetFloat(PrefKeys.DefaultSpeed);
 		} else {
-			PlayerPrefs.SetFloat("DefaultSpeed", this.speed);
+			PlayerPrefs.SetFloat(PrefKeys.DefaultSpeed, this.speed);
 		}
 
-		if(PlayerPrefs.HasKey("DefaultRotateSpeed"))
+		if(PlayerPrefs.HasKey(PrefKeys.DefaultRotateSpeed))
 		{
-			this.rotateSpeed = PlayerPrefs.GetFloat("DefaultRotateSpeed");
+			this.rotateSpeed = PlayerPrefs.GetFloat(PrefKeys.DefaultRotateSpeed);
 		} else {
-			PlayerPrefs.SetFloat("DefaultRotateSpeed", this.rotateSpeed);
+			PlayerPrefs.SetFloat(PrefKeys.DefaultRotateSpeed, this.rotateSpeed);
 		}
 
-		if(PlayerPrefs.HasKey("DefaultRotateAngle"))
+		if(PlayerPrefs.HasKey(PrefKeys.DefaultRotateAngle))
 		{
-			this.minRotateDegree = PlayerPrefs.GetFloat("DefaultRotateAngle");
+			this.minRotateDegree = PlayerPrefs.GetFloat(PrefKeys.DefaultRotateAngle);
 		} else {
-			PlayerPrefs.SetFloat("DefaultRotateAngle", this.minRotateDegree);
+			PlayerPrefs.SetFloat(PrefKeys.DefaultRotateAngle, this.minRotateDegree);
 		}
 
-		if(PlayerPrefs.HasKey("DefaultIdleLimit"))
+		if(PlayerPrefs.HasKey(PrefKeys.DefaultIdleLimit))
 		{
-			this.idleLimitValue = PlayerPrefs.GetFloat("DefaultIdleLimit");
+			this.idleLimitValue = PlayerPrefs.GetFloat(PrefKeys.DefaultIdleLimit);
 		} else {
-			PlayerPrefs.SetFloat("DefaultIdleLimit", this.idleLimitValue);
+			PlayerPrefs.SetFloat(PrefKeys.DefaultIdleLimit, this.idleLimitValue);
 		}
 
-		if(PlayerPrefs.HasKey("DefaultAirIdleLimit"))
+		if(PlayerPrefs.HasKey(PrefKeys.DefaultAirIdleLimit))
 		{
-			this.airIdleLimitValue = PlayerPrefs.GetFloat("DefaultAirIdleLimit");
+			this.airIdleLimitValue = PlayerPrefs.GetFloat(PrefKeys.DefaultAirIdleLimit);
 		} else {
-			PlayerPrefs.SetFloat("DefaultAirIdleLimit", this.airIdleLimitValue);
+			PlayerPrefs.SetFloat(PrefKeys.DefaultAirIdleLimit, this.airIdleLimitValue);
 		}
 
-		if(PlayerPrefs.HasKey("DefaultMaxSpeedReach"))
+		if(PlayerPrefs.HasKey(PrefKeys.DefaultMaxSpeedReach))
 		{
-			this.maxSpeedReachPercentage = PlayerPrefs.GetFloat("DefaultMaxSpeedReach");
+			this.maxSpeedReachPercentage = PlayerPrefs.GetFloat(PrefKeys.DefaultMaxSpeedReach);
 		} else {
-			PlayerPrefs.SetFloat("DefaultMaxSpeedReach", this.maxSpeedReachPercentage);
+			PlayerPrefs.SetFloat(PrefKeys.DefaultMaxSpeedReach, this.maxSpeedReachPercentage);
 		}
 
 		inputAdapter.RegisterDefaultInputMode();
@@ -245,29 +245,29 @@ public void RegisterDefaultValues()
 
 void LoadSavedValues()
 	{
-		if(PlayerPrefs.HasKey("Speed"))
+		if(PlayerPrefs.HasKey(PrefKeys.Speed))
 		{
-			this.speed = PlayerPrefs.GetFloat("Speed");
+			this.speed = PlayerPrefs.GetFloat(PrefKeys.Speed);
 		}
 
-		if(PlayerPrefs.HasKey("RotateSpeed"))
+		if(PlayerPrefs.HasKey(PrefKeys.RotateSpeed))
 		{
-			this.rotateSpeed = PlayerPrefs.GetFloat("RotateSpeed");
+			this.rotateSpeed = PlayerPrefs.GetFloat(PrefKeys.RotateSpeed);
 		}
 
-		if(PlayerPrefs.HasKey("RotateAngle"))
+		if(PlayerPrefs.HasKey(PrefKeys.RotateAngle))
 		{
-			this.minRotateDegree = PlayerPrefs.GetFloat("RotateAngle");
+			this.minRotateDegree = PlayerPrefs.GetFloat(PrefKeys.RotateAngle);
 		}
 
-		if(PlayerPrefs.HasKey("IdleLimit"))
+		if(PlayerPrefs.HasKey(PrefKeys.IdleLimit))
 		{
-			this.idleLimitValue = PlayerPrefs.GetFloat("IdleLimit");
+			this.idleLimitValue = PlayerPrefs.GetFloat(PrefKeys.IdleLimit);
 		}
 
-		if(PlayerPrefs.HasKey("AirIdleLimit"))
+		if(PlayerPrefs.HasKey(PrefKeys.AirIdleLimit))
 		{
-			this.airIdleLimitValue = PlayerPrefs.GetFloat("AirIdleLimit");
+			this.airIdleLimitValue = PlayerPrefs.GetFloat(PrefKeys.AirIdleLimit);
 		}
 
 		inputAdapter.LoadSavedInputMode();
@@ -336,7 +336,7 @@ void LoadSavedValues()
 			float playerSpeed = Mathf.Clamp01(calcRatio / maxSpeedReachStandard);
 //			Debug.Log (">>>>>>" + playerSpeed.ToString()  + "|" + calcRatio.ToString()+ "|" + joystickMag.ToString());
 
-			animator.SetFloat("Speed", playerSpeed);
+			animator.SetFloat(AnimatorParams.Speed, playerSpeed);
 		}
 
 		GroundCheck ();
@@ -384,7 +384,7 @@ void LoadSavedValues()
                 playerFX.ToggleOffMoveFX();
 
                 if (SoundBoard.instance != null)
-                    SoundBoard.instance.PlayFromSoundBoard("SND_PC_LANDING", this.transform.position);
+                    SoundBoard.instance.PlayFromSoundBoard(SoundID.PC_Landing, this.transform.position);
             }
 		}
 
@@ -501,7 +501,7 @@ void LoadSavedValues()
 
 		}
 
-		animator.SetBool ("isGrounded", controller.isGrounded || isOnPlatform);
+		animator.SetBool (AnimatorParams.IsGrounded, controller.isGrounded || isOnPlatform);
 	}
 
 	public int jumpCount = 0;
@@ -571,7 +571,7 @@ void LoadSavedValues()
 		//동급취급을 해주었다. 
 		if((controller.isGrounded || isOnPlatform) && savedJumpHeight <= 0F) //isGrounded
 		{
-			moveDirection = normMoveDirection * (Mathf.Clamp01(animator.GetFloat ("Speed") * moveSensitivity));
+			moveDirection = normMoveDirection * (Mathf.Clamp01(animator.GetFloat (AnimatorParams.Speed) * moveSensitivity));
 
 			if(moveDirection != Vector3.zero) //지면일때 움직임이 존재하면 걷는 효과 넣음 
 			{
@@ -582,9 +582,9 @@ void LoadSavedValues()
 
 		} else {
 
-			moveDirection = new Vector3 (normMoveDirection.x * animator.GetFloat ("Speed"),
+			moveDirection = new Vector3 (normMoveDirection.x * animator.GetFloat (AnimatorParams.Speed),
 			                             moveDirection.y,
-			                             normMoveDirection.z * animator.GetFloat ("Speed"));
+			                             normMoveDirection.z * animator.GetFloat (AnimatorParams.Speed));
 
 			playerFX.ToggleOffMoveFX(); //공중일땐 움직임과 상관없이 걷는 효과 없음 
 		}
@@ -661,11 +661,11 @@ void LoadSavedValues()
 			accelerationTime -= Time.deltaTime;
 			Vector3 direction = transform.TransformDirection (Vector3.forward);
 			controller.Move(direction * Time.deltaTime * AccelSpeed);
-			animator.SetFloat("Speed", 1F);
+			animator.SetFloat(AnimatorParams.Speed, 1F);
 		}
 		
 		isAcceleRate = false;
-		animator.SetFloat("Speed", 0F);
+		animator.SetFloat(AnimatorParams.Speed, 0F);
 	}
 
 	public void Jump(bool isForced = false, float jumpHeight = -1F, float forceX = 0F, float forceZ = 0F)
@@ -700,15 +700,15 @@ void LoadSavedValues()
 		if (isSpin) 
 		{
 			if(SoundBoard.instance != null)
-				SoundBoard.instance.PlayFromSoundBoard("SND_PC_DOUBLE_JUMP", this.transform.position);
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.PC_DoubleJump, this.transform.position);
 
-			animator.SetTrigger("SpinTgr"); //켜지고 트랜지션이 일어나면 자동으로 꺼지는 것.  //왜 이걸 몰랐을까! 타이밍 맞춰서 bool false할 필요가 없다 
+			animator.SetTrigger(AnimatorParams.SpinTgr); //켜지고 트랜지션이 일어나면 자동으로 꺼지는 것.  //왜 이걸 몰랐을까! 타이밍 맞춰서 bool false할 필요가 없다 
 		} else {
 
 			if(SoundBoard.instance != null)
-				SoundBoard.instance.PlayFromSoundBoard("SND_PC_JUMP", this.transform.position);
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.PC_Jump, this.transform.position);
 
-			animator.SetTrigger("JumpTgr");
+			animator.SetTrigger(AnimatorParams.JumpTgr);
 		}
 
 		if (jumpHeight == -1F) 
@@ -797,7 +797,7 @@ void LoadSavedValues()
 			horz = 0F;
 			vert = 0F;
 
-			animator.SetFloat("Speed", 0F);
+			animator.SetFloat(AnimatorParams.Speed, 0F);
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		}
 

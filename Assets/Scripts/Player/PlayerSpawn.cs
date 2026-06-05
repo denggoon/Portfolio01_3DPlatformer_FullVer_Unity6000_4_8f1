@@ -30,7 +30,7 @@ public class PlayerSpawn : MonoBehaviour {
 		yield return new WaitForSeconds(spawnDelayTime);
 
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("SND_FX_PORTAL_SPAWN", this.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.FX_PortalSpawn, this.transform.position);
 
 		ResourcesManager.instance.PopEffect (spawnFxObjStr, this.transform.position);
 
@@ -53,7 +53,7 @@ public class PlayerSpawn : MonoBehaviour {
 	public void WarpClose()
 	{
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("SND_FX_PORTAL_DESPAWN", this.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.FX_PortalDespawn, this.transform.position);
 
 		ResourcesManager.instance.PopEffect (closeFxObjStr, this.transform.position);
 

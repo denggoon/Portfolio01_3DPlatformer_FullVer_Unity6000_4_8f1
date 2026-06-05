@@ -101,7 +101,7 @@ public class PlayerHealth : MonoBehaviour {
 		}
 
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("SND_PC_DAMAGE", this.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.PC_Damage, this.transform.position);
 
 		currHealth -= damage;
 
@@ -114,9 +114,9 @@ public class PlayerHealth : MonoBehaviour {
 		if(currHealth <= 0F)
 		{
 			if(SoundBoard.instance != null)
-				SoundBoard.instance.PlayFromSoundBoard("SND_PC_DAMAGE_DEATH", this.transform.position);
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.PC_DamageDeath, this.transform.position);
 
-			GameRuleManager.instance.playerMove.animator.SetTrigger("DeadTgr");
+			GameRuleManager.instance.playerMove.animator.SetTrigger(AnimatorParams.DeadTgr);
 			if(damage == 999F)
 			{
 				Destroy(GameRuleManager.instance.playerMove.mainTransform.gameObject);
@@ -128,7 +128,7 @@ public class PlayerHealth : MonoBehaviour {
 			GameRuleManager.instance.GameOver();
 
 		} else {
-			GameRuleManager.instance.playerMove.animator.SetTrigger("DamageTgr");
+			GameRuleManager.instance.playerMove.animator.SetTrigger(AnimatorParams.DamageTgr);
 			StartInvincible();
 		}
 	}
@@ -156,7 +156,7 @@ public class PlayerHealth : MonoBehaviour {
 		if (isItemTrigerred) 
 		{
 			if(SoundBoard.instance != null)
-				SoundBoard.instance.PlayFromSoundBoard("SND_BGM_ITEM_INVINCIBLE");
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.BGM_Invincible);
 
 			isItemInvincible = true;
 		}

@@ -28,7 +28,7 @@ public class ButtonTrigger : Trap {
 
 		if (isDisable == true) {
 			buttonCollider.enabled = false;
-			animator.SetBool ("isDisable", true);
+			animator.SetBool (AnimatorParams.IsDisable, true);
 			return;
 		}
 		beforeTriggerFlag = isTriggered;
@@ -132,13 +132,13 @@ public class ButtonTrigger : Trap {
 
 	void enableButton() {
 		if (isStay == false) {
-			animator.SetBool ("isDefault", true);
+			animator.SetBool (AnimatorParams.IsDefault, true);
 		}
 	}
 
 	void disableButton(){
-		animator.SetBool ("isDefault", false);
-		animator.SetTrigger("isButtonClick");
+		animator.SetBool (AnimatorParams.IsDefault, false);
+		animator.SetTrigger(AnimatorParams.IsButtonClick);
 	}
 	
 }

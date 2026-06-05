@@ -248,14 +248,14 @@ public class OptionPanel : MonoBehaviour {
 
 		eConfirmedInputMode = eChoiceInputMode;
 
-		PlayerPrefs.SetFloat("Speed", playerSpeed);
-		PlayerPrefs.SetFloat("RotateSpeed", rotateSpeed);
-		PlayerPrefs.SetFloat("RotateAngle", rotateAngle);
-		PlayerPrefs.SetFloat("IdleLimit", idleLimit);
-		PlayerPrefs.SetFloat("AirIdleLimit", airIdleLimit);
-		PlayerPrefs.SetFloat("MaxSpeedReach", maxSpeedReachPercentage);
+		PlayerPrefs.SetFloat(PrefKeys.Speed, playerSpeed);
+		PlayerPrefs.SetFloat(PrefKeys.RotateSpeed, rotateSpeed);
+		PlayerPrefs.SetFloat(PrefKeys.RotateAngle, rotateAngle);
+		PlayerPrefs.SetFloat(PrefKeys.IdleLimit, idleLimit);
+		PlayerPrefs.SetFloat(PrefKeys.AirIdleLimit, airIdleLimit);
+		PlayerPrefs.SetFloat(PrefKeys.MaxSpeedReach, maxSpeedReachPercentage);
 
-		PlayerPrefs.SetInt ("InputMode", (int)eConfirmedInputMode);
+		PlayerPrefs.SetInt (PrefKeys.InputMode, (int)eConfirmedInputMode);
 	}
 
 	public void MuteAll(bool isMute)

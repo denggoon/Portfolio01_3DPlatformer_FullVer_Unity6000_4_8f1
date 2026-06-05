@@ -34,7 +34,7 @@ public class PreSceneDataLoader : MonoBehaviour
 
 	IEnumerator Start () 
 	{
-		string sceneName = PlayerPrefs.GetString("LoadingSceneName");
+		string sceneName = PlayerPrefs.GetString(PrefKeys.LoadingSceneName);
 
 //		yield return StartCoroutine(BundleManager.instance.LoadBundleCoroutine (sceneName.ToLower()));
 

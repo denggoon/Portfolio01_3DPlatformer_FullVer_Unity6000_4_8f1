@@ -61,21 +61,21 @@ public class PlayerInputAdapter : MonoBehaviour
 
     public void RegisterDefaultInputMode()
     {
-        if (PlayerPrefs.HasKey("DefaultInputMode"))
+        if (PlayerPrefs.HasKey(PrefKeys.DefaultInputMode))
         {
-            ApplyInputMode((INPUT_MODE)PlayerPrefs.GetInt("DefaultInputMode"));
+            ApplyInputMode((INPUT_MODE)PlayerPrefs.GetInt(PrefKeys.DefaultInputMode));
             return;
         }
 
         INPUT_MODE defaultInputMode = GetDefaultInputMode();
         ApplyInputMode(defaultInputMode);
-        PlayerPrefs.SetInt("DefaultInputMode", (int)defaultInputMode);
+        PlayerPrefs.SetInt(PrefKeys.DefaultInputMode, (int)defaultInputMode);
     }
 
     public void LoadSavedInputMode()
     {
-        if (PlayerPrefs.HasKey("InputMode"))
-            ApplyInputMode((INPUT_MODE)PlayerPrefs.GetInt("InputMode"));
+        if (PlayerPrefs.HasKey(PrefKeys.InputMode))
+            ApplyInputMode((INPUT_MODE)PlayerPrefs.GetInt(PrefKeys.InputMode));
     }
 
     private INPUT_MODE GetDefaultInputMode()

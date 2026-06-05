@@ -49,14 +49,14 @@ public class TimerBlock : Trap {
 			if(SoundBoard.instance != null)
 			{
 				
-				SoundBoard.instance.PlayFromSoundBoard("SND_GMK_007_ON", this.transform.position);
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.GMK_TimerOn, this.transform.position);
 			}
 
 		} else {
 
 			if(SoundBoard.instance != null)
 			{
-				SoundBoard.instance.PlayFromSoundBoard("SND_GMK_007_OFF", this.transform.position);
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.GMK_TimerOff, this.transform.position);
 			}
 		}
 

@@ -34,7 +34,7 @@ public class AccelPad : MonoBehaviour {
 	void AnimationOff () {
 		if(animator != null)
 		{
-			animator.SetTrigger("OffTrigger");
+			animator.SetTrigger(AnimatorParams.OffTrigger);
 		}
 	}
 
@@ -42,7 +42,7 @@ public class AccelPad : MonoBehaviour {
 	{
 		if(GameRuleManager.instance.playerMove.isKnockBack == true) return;
 
-		animator.SetTrigger("OnTrigger");
+		animator.SetTrigger(AnimatorParams.OnTrigger);
 		Invoke("AnimationOn", 0.05f);
 //		Vector3 direction = transform.TransformDirection (Vector3.forward);
 		GameRuleManager.instance.playerMove.Accelerate(speed ,duration);

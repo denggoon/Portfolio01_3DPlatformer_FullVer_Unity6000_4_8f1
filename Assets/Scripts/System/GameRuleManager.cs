@@ -187,7 +187,7 @@ public class GameRuleManager : MonoBehaviour {
 		if(playerHealth == null) return;
 
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("Voice_Ready", playerMove.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.Voice_Ready, playerMove.transform.position);
 
 		isPlayerScriptSuccess = true;
 	}
@@ -319,7 +319,7 @@ public class GameRuleManager : MonoBehaviour {
 		latestCheckPoint = checkpointPos;
 
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("Voice_Start", playerMove.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.Voice_Start, playerMove.transform.position);
 
 		UIManager.instance.gemCollected = currentGem;
 
@@ -346,7 +346,7 @@ public class GameRuleManager : MonoBehaviour {
 		                       exitPrefab.transform.rotation);
 
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("SND_FX_PORTAL_SPAWN", this.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.FX_PortalSpawn, this.transform.position);
 	}
 
 
@@ -361,7 +361,7 @@ public class GameRuleManager : MonoBehaviour {
 		UIManager.instance.ShowClearMsg();
 
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("SND_JGL_GAMECLEAR", this.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.JGL_GameClear, this.transform.position);
 
         // QQQ 임시로 star는 1, currentGold를 score로 대신한다. by kks
 		//if(NviusNetManager.instance != null && BundleManager.instance != null)
@@ -380,7 +380,7 @@ public class GameRuleManager : MonoBehaviour {
 		UIManager.instance.ShowFailMsg();
 
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("SND_JGL_GAMEOVER", this.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.JGL_GameOver, this.transform.position);
 	}
 
 	public void RespawnAtCheckpoint()

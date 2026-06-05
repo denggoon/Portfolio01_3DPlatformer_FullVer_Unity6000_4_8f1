@@ -83,7 +83,7 @@ public class MainMenu : MonoBehaviour {
 
     private void SetLoadingStageAfterRecordLoading(string stageName)
     {
-        PlayerPrefs.SetString("LoadingSceneName", stageName);
+        PlayerPrefs.SetString(PrefKeys.LoadingSceneName, stageName);
 
         pnlClickPrevention.SetActive(true);
         pnlStageInfoPanel.SetActive(true);

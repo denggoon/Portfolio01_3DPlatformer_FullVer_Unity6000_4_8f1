@@ -27,7 +27,7 @@ public class DataFileManager : MonoBehaviour {
 
 		PlayerPrefs.DeleteKey ("FileLoadMode");
 
-		PlayerPrefs.SetInt("FileLoadMode", System.Convert.ToInt32(eFileLoadMode));
+		PlayerPrefs.SetInt(PrefKeys.FileLoadMode, System.Convert.ToInt32(eFileLoadMode));
 
 		DontDestroyOnLoad (this.gameObject);
 	}

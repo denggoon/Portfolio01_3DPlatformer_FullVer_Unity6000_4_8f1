@@ -32,7 +32,7 @@ public class AnimatedDamageZone : Trap {
 
 		idleHash = animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
 
-		animator.SetFloat ("loopWaitTime", cycleWaitTime);
+		animator.SetFloat (AnimatorParams.LoopWaitTime, cycleWaitTime);
 
 		Collider[] collArr = transform.GetComponentsInChildren<Collider> ();
 
@@ -68,9 +68,9 @@ public class AnimatedDamageZone : Trap {
 
 		animator.speed = speedMultiplier;
 
-		animator.SetFloat ("swingAngle", swingAngle);
-		animator.SetBool ("isLoop", isLoop);
-		animator.SetFloat ("loopWaitTime", cycleWaitTime);
+		animator.SetFloat (AnimatorParams.SwingAngle, swingAngle);
+		animator.SetBool (AnimatorParams.IsLoop, isLoop);
+		animator.SetFloat (AnimatorParams.LoopWaitTime, cycleWaitTime);
 	}
 
 
@@ -94,12 +94,12 @@ public class AnimatedDamageZone : Trap {
 				{
 					timer -= Time.deltaTime;
 
-					animator.SetFloat("loopWaitTime", timer);
+					animator.SetFloat(AnimatorParams.LoopWaitTime, timer);
 				} else {
 
 					if(isSwung == false)
 					{
-						animator.SetTrigger("tgrSwing");
+						animator.SetTrigger(AnimatorParams.TgrSwing);
 //						isSwung = true;
 					} else {
 

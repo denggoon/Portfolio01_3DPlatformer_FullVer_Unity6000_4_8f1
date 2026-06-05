@@ -33,7 +33,7 @@ public class DandelionTrigger : MonoBehaviour
         {
             if (SoundBoard.instance != null)
             {
-                SoundBoard.instance.PlayFromSoundBoard("SND_BGO_DANDELION", this.transform.position);
+                SoundBoard.instance.PlayFromSoundBoard(SoundID.BGO_Dandelion, this.transform.position);
             }
 
             effect.Play();

@@ -30,7 +30,7 @@ public class FallPlatform : Trap {
 
 	void Start()
 	{
-		animator.SetFloat ("FallSpeed", fallSpeedMultiplier);
+		animator.SetFloat (AnimatorParams.FallSpeed, fallSpeedMultiplier);
 		idleHash = animator.GetCurrentAnimatorStateInfo (0).shortNameHash;
 		wobbleHash = Animator.StringToHash (strWobbleAnimName);
 	}
@@ -53,17 +53,17 @@ public class FallPlatform : Trap {
 	public void Sink()
 	{
 		isSinkPhase = true;
-		animator.SetTrigger ("Sink");
+		animator.SetTrigger (AnimatorParams.Sink);
 
 		if(SoundBoard.instance != null)
-			SoundBoard.instance.PlayFromSoundBoard("SND_GMK_002_TOUCH", this.transform.position);
+			SoundBoard.instance.PlayFromSoundBoard(SoundID.GMK_Touch, this.transform.position);
 	}
 
 	public void StartWobble()
 	{
 		if (!wobbleStarted && isSinkPhase) 
 		{
-			animator.SetFloat ("EnduranceTime", enduranceTime);
+			animator.SetFloat (AnimatorParams.EnduranceTime, enduranceTime);
 			wobbleStarted = true;
 			remainingTime = enduranceTime;
 		}
@@ -88,7 +88,7 @@ public class FallPlatform : Trap {
 			if (remainingTime > 0F) 
 			{
 				remainingTime -= Time.deltaTime;
-				animator.SetFloat ("EnduranceTime", remainingTime);
+				animator.SetFloat (AnimatorParams.EnduranceTime, remainingTime);
 
 			}
 

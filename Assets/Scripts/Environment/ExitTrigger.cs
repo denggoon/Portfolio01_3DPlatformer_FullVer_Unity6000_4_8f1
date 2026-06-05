@@ -16,7 +16,7 @@ public class ExitTrigger : MonoBehaviour
 		if(collider.gameObject.layer == LayerMask.NameToLayer("Player"))
 		{
 			if(SoundBoard.instance != null)
-				SoundBoard.instance.PlayFromSoundBoard("SND_FX_PORTAL_DESPAWN", this.transform.position);
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.FX_PortalDespawn, this.transform.position);
 
 			GameRuleManager.instance.StageClear();
 

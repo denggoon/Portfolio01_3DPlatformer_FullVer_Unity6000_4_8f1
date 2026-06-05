@@ -28,7 +28,7 @@ public class SceneLoader : MonoBehaviour
 	public IEnumerator Execute () 
 	{
 		this.enabled = true;
-		sceneName = PlayerPrefs.GetString("LoadingSceneName");
+		sceneName = PlayerPrefs.GetString(PrefKeys.LoadingSceneName);
 
 		BundleManager.instance.currentSceneName = sceneName;
 

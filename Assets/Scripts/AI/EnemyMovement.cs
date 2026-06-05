@@ -277,8 +277,8 @@ public class EnemyMovement : MonoBehaviour {
 			myNav.speed = modifiedSpeed;
 		}
 
-		if (ContainsParam ("Speed"))
-			animator.SetFloat ("Speed", myNav.speed); //Mathf.Sqrt(Mathf.Abs(myNav.velocity.x) + Mathf.Abs(myNav.velocity.z)));
+		if (ContainsParam (AnimatorParams.Speed))
+			animator.SetFloat (AnimatorParams.Speed, myNav.speed); //Mathf.Sqrt(Mathf.Abs(myNav.velocity.x) + Mathf.Abs(myNav.velocity.z)));
 		//애니메이터에 속도를 반영, 속도에 맞는 애니메이션 재생 
 
 //		remainingDist = myNav.remainingDistance;
@@ -313,8 +313,8 @@ public class EnemyMovement : MonoBehaviour {
 		{
 			isLost = false; //적이 보이면 적을 찾았기 때문에 더이상 두리번 거리지 않습니다. 
 
-			if(ContainsParam("LostTime"))
-				animator.SetFloat("LostTime", 0F); //본래 chaseTimer가 다 감소할때까지 두리번 애니메이션을 반복하지만, 강제로 종료 시킵니다. 
+			if(ContainsParam(AnimatorParams.LostTime))
+				animator.SetFloat(AnimatorParams.LostTime, 0F); //본래 chaseTimer가 다 감소할때까지 두리번 애니메이션을 반복하지만, 강제로 종료 시킵니다. 
 
 //			StopLostAnimation(); //? 애니메이션도 급종료. 
 
@@ -351,11 +351,11 @@ public class EnemyMovement : MonoBehaviour {
 			{
 				if(SoundBoard.instance != null)
 				{
-					SoundBoard.instance.PlayFromSoundBoard("SND_MON_FIND", GameRuleManager.instance.playerMove.transform.position);
+					SoundBoard.instance.PlayFromSoundBoard(SoundID.MON_Find, GameRuleManager.instance.playerMove.transform.position);
 				}
 
 				if (animator != null) {
-					animator.SetTrigger("FoundEnemyTgr"); //어그로 애니메이션 플레이 
+					animator.SetTrigger(AnimatorParams.FoundEnemyTgr); //어그로 애니메이션 플레이 
 				}
 //				aggroTimer = animator.getstate(0).length; //어그로 애니메이션의 길이 만큼 대기해야함 
 				aggroTimer = 0F;
@@ -407,8 +407,8 @@ public class EnemyMovement : MonoBehaviour {
 		
 		if(isLost == false) //처음 놓친 시점에 애니메이션 재생 
 		{
-			if(ContainsParam("LostEnemyTgr"))
-				animator.SetTrigger("LostEnemyTgr");
+			if(ContainsParam(AnimatorParams.LostEnemyTgr))
+				animator.SetTrigger(AnimatorParams.LostEnemyTgr);
 
 //			StartCoroutine("PlayLostAnimation");	// Mentis 0000010 Issue
 			isLost = true;
@@ -417,7 +417,7 @@ public class EnemyMovement : MonoBehaviour {
 		if(isLost) //놓친 상태에서 대기시간 애니메이션 트리로 전송 
 		{
 			if(ContainsParam("Lost"))
-				animator.SetFloat("LostTime", chaseTimer);
+				animator.SetFloat(AnimatorParams.LostTime, chaseTimer);
 		}
 		
 		if(chaseTimer <= 0F) //추적 대기 시간 만큼 기다린 다음 
@@ -632,7 +632,7 @@ public class EnemyMovement : MonoBehaviour {
 //			}
 
 			if(SoundBoard.instance != null)
-				SoundBoard.instance.PlayFromSoundBoard("SND_MON_HIT", this.transform.position);
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.MON_Hit, this.transform.position);
 		}
 	} 
 
@@ -641,7 +641,7 @@ public class EnemyMovement : MonoBehaviour {
 		if(isImmortal == false && health <= 0F) //불사캐릭터가 아니고, 체력이 0이하가 되었다면 
 		{
 			if(SoundBoard.instance != null)
-				SoundBoard.instance.PlayFromSoundBoard("SND_MON_DESPAWN", this.transform.position);
+				SoundBoard.instance.PlayFromSoundBoard(SoundID.MON_Despawn, this.transform.position);
 
 			if(hasDroppable)
 			{
@@ -713,9 +713,9 @@ public class EnemyMovement : MonoBehaviour {
 
 		if (stomped) 
 		{
-			animator.SetTrigger("JumpDamagedTgr");
+			animator.SetTrigger(AnimatorParams.JumpDamagedTgr);
 		} else {
-			animator.SetTrigger("DamagedTgr");
+			animator.SetTrigger(AnimatorParams.DamagedTgr);
 		}
 		
 		stunTimer = stunWaitTime;
@@ -732,7 +732,7 @@ public class EnemyMovement : MonoBehaviour {
 			stunTimer -= Time.deltaTime;
 			stunIntervalChecker += Time.deltaTime;
 
-			animator.SetFloat ("StunTime", stunTimer);
+			animator.SetFloat (AnimatorParams.StunTime, stunTimer);
 
 			if(stunIntervalChecker > stunInterval)
 			{
