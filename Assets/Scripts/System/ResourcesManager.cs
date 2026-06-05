@@ -33,7 +33,9 @@ public class ResourcesManager : MonoBehaviour
 
     void OnDestroy()
     {
-        ClearCache();
+        // Addressables가 PlayMode 종료 시 자체 정리를 먼저 수행하므로
+        // 핸들 Release 없이 캐시 참조만 제거한다
+        _goHandleCache.Clear();
         instance_ = null;
     }
 
