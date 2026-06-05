@@ -14,6 +14,8 @@ public class PlayerMoveCC : MonoBehaviour
 {
 	private RecordGameplay replay;
 	public CNJoystick cnJoystick;
+	private PlayerInputAdapter inputAdapter;
+	private PlayerInputModeController inputModeController;
 	new public Transform transform;
 
 	public E_PLAYER_ATTACK_TYPE ePlayerAtkType = E_PLAYER_ATTACK_TYPE.HOPNBOP;
@@ -128,6 +130,15 @@ public class PlayerMoveCC : MonoBehaviour
 	void Awake()
 	{
 		transform = GetComponent<Transform>();
+		inputAdapter = GetComponent<PlayerInputAdapter>();
+
+		if (inputAdapter == null)
+			inputAdapter = gameObject.AddComponent<PlayerInputAdapter>();
+
+		inputModeController = GetComponent<PlayerInputModeController>();
+
+		if (inputModeController == null)
+			inputModeController = gameObject.AddComponent<PlayerInputModeController>();
 
 		if(animator == null)
 			animator = GetComponent<Animator> ();
@@ -177,7 +188,9 @@ public class PlayerMoveCC : MonoBehaviour
 //		ePlayerAtkType = E_PLAYER_ATTACK_TYPE.RUNNBUMP;
 		GameRuleManager.instance.isPlayerScriptSuccess = false;
 
-		cnJoystick = FindObjectOfType<CNJoystick>();
+		cnJoystick = FindAnyObjectByType<CNJoystick>();
+		inputAdapter.SetJoystick(cnJoystick);
+		inputModeController.SetJoystick(cnJoystick);
 
 //		socialTimer = socialWaitTime;
 
@@ -188,7 +201,7 @@ public class PlayerMoveCC : MonoBehaviour
 		LoadSavedValues();
 	}
 
-	public void RegisterDefaultValues()
+public void RegisterDefaultValues()
 	{
 		if(PlayerPrefs.HasKey("DefaultSpeed"))
 		{
@@ -232,76 +245,10 @@ public class PlayerMoveCC : MonoBehaviour
 			PlayerPrefs.SetFloat("DefaultMaxSpeedReach", this.maxSpeedReachPercentage);
 		}
 
-		if(PlayerPrefs.HasKey("DefaultInputMode"))
-		{
-			int boolInt = PlayerPrefs.GetInt("DefaultInputMode");
-
-			UIManager.instance.optionPanel.eConfirmedInputMode = (INPUT_MODE)boolInt;
-
-			switch((INPUT_MODE)boolInt)
-			{
-				case INPUT_MODE.FREE_JOYSTICK:
-					cnJoystick.SnapsToFinger = true;
-					cnJoystick.TouchZoneSize = new Vector2(14F, 16F);
-
-					UIManager.instance.optionPanel.gamePadOverlay = false;
-					UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(false);
-				break;
-
-				case INPUT_MODE.STATIC_JOYSTICK:
-					cnJoystick.SnapsToFinger = false;
-					cnJoystick.TouchZoneSize = new Vector2(5F, 5F);
-
-					UIManager.instance.optionPanel.gamePadOverlay = false;
-					UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(false);
-				break;
-
-				case INPUT_MODE.GAMEPAD:
-					cnJoystick.SnapsToFinger = false;
-					cnJoystick.TouchZoneSize = new Vector2(5F, 5F);
-
-					UIManager.instance.optionPanel.gamePadOverlay = true;
-					UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(true);
-				break;
-			} 
-		} else {
-
-			if (Application.platform == RuntimePlatform.IPhonePlayer) {
-				cnJoystick.SnapsToFinger = false;						// 아이폰에서 기본 pad는 static joystick
-				UIManager.instance.optionPanel.gamePadOverlay = false;
-			}
-
-			if(cnJoystick.SnapsToFinger)
-			{
-				UIManager.instance.optionPanel.gamePadOverlay = false;
-				UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(false);
-				cnJoystick.TouchZoneSize = new Vector2(14F, 16F);
-
-				PlayerPrefs.SetInt("DefaultInputMode", (int)INPUT_MODE.FREE_JOYSTICK);
-				UIManager.instance.optionPanel.eConfirmedInputMode = INPUT_MODE.FREE_JOYSTICK;
-			} else {
-
-				if(UIManager.instance.optionPanel.gamePadOverlay)
-				{
-					UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(true);
-					cnJoystick.TouchZoneSize = new Vector2(5F, 5F);
-
-					PlayerPrefs.SetInt("DefaultInputMode", (int)INPUT_MODE.GAMEPAD);
-					UIManager.instance.optionPanel.eConfirmedInputMode = INPUT_MODE.GAMEPAD;
-
-				} else {
-
-					UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(false);
-					cnJoystick.TouchZoneSize = new Vector2(5F, 5F);
-
-					PlayerPrefs.SetInt("DefaultInputMode", (int)INPUT_MODE.STATIC_JOYSTICK);
-					UIManager.instance.optionPanel.eConfirmedInputMode = INPUT_MODE.STATIC_JOYSTICK;
-				}
-			}
-		}
+		inputModeController.RegisterDefaultInputMode();
 	}
 
-	void LoadSavedValues()
+void LoadSavedValues()
 	{
 		if(PlayerPrefs.HasKey("Speed"))
 		{
@@ -328,39 +275,7 @@ public class PlayerMoveCC : MonoBehaviour
 			this.airIdleLimitValue = PlayerPrefs.GetFloat("AirIdleLimit");
 		}
 
-		if(PlayerPrefs.HasKey("InputMode"))
-		{
-			int boolInt = PlayerPrefs.GetInt("InputMode");
-			
-			switch((INPUT_MODE)boolInt)
-			{
-			case INPUT_MODE.FREE_JOYSTICK:
-				cnJoystick.SnapsToFinger = true;
-				cnJoystick.TouchZoneSize = new Vector2(14F, 16F);
-
-				UIManager.instance.optionPanel.gamePadOverlay = false;
-				UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(false);
-				break;
-				
-			case INPUT_MODE.STATIC_JOYSTICK:
-				cnJoystick.SnapsToFinger = false;
-				cnJoystick.TouchZoneSize = new Vector2(5F, 5F);
-
-				UIManager.instance.optionPanel.gamePadOverlay = false;
-				UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(false);
-				break;
-				
-			case INPUT_MODE.GAMEPAD:
-				cnJoystick.SnapsToFinger = false;
-				cnJoystick.TouchZoneSize = new Vector2(5F, 5F);
-
-				UIManager.instance.optionPanel.gamePadOverlay = true;
-				UIManager.instance.optionPanel.gamePadSys.ToggleGamePadSprites(true);
-				break;
-			} 
-
-			UIManager.instance.optionPanel.eConfirmedInputMode = (INPUT_MODE)boolInt;
-		}
+		inputModeController.LoadSavedInputMode();
 	}
 
 	float timer;
@@ -371,6 +286,8 @@ public class PlayerMoveCC : MonoBehaviour
 
 	void Update()
 	{
+		PlayerInputState inputState = new PlayerInputState();
+
 		if (animator == null)
 			animator = GetComponent<Animator> ();
 		
@@ -379,37 +296,9 @@ public class PlayerMoveCC : MonoBehaviour
 
 		if(GameRuleManager.instance.eGameStatus == E_GAME_STATUS.IN_PLAY && !onFreezeEvent)
 		{
-			if(cnJoystick == null)
-				cnJoystick = FindObjectOfType<CNJoystick>();
-			
-			if(cnJoystick == null) return;
-
-			if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) 
-			{
-				if(UIManager.instance != null)
-				{
-					horz = Mathf.Clamp(cnJoystick.GetAxis("Horizontal") / cnJoystick.DragRadius, -1F, 1F);
-
-					vert = Mathf.Clamp(cnJoystick.GetAxis("Vertical") / cnJoystick.DragRadius, -1F, 1F);
-//					horz = UIManager.instance.posX;
-//					vert = UIManager.instance.posY;
-				}
-			}
-			else 
-			{
-				if(UIManager.instance != null)
-				{
-					horz = Mathf.Clamp(cnJoystick.GetAxis("Horizontal") / cnJoystick.DragRadius, -1F, 1F);
-
-					if(horz == 0)
-						horz = Input.GetAxis ("Horizontal");
-
-					vert = Mathf.Clamp(cnJoystick.GetAxis("Vertical") / cnJoystick.DragRadius, -1F, 1F);
-
-					if(vert == 0)
-						vert = Input.GetAxis ("Vertical");
-				}
-			}
+			inputState = inputAdapter.ReadInput();
+			horz = inputState.Horizontal;
+			vert = inputState.Vertical;
 
 		} else {
 			horz = 0F;
@@ -456,7 +345,7 @@ public class PlayerMoveCC : MonoBehaviour
 		}
 
 		GroundCheck ();
-		PlayerInput ();
+		PlayerInput (inputState);
 
 		currentY = controller.transform.position.y;
 
@@ -621,52 +510,13 @@ public class PlayerMoveCC : MonoBehaviour
 	}
 
 	public int jumpCount = 0;
-	void PlayerInput()
+	void PlayerInput(PlayerInputState inputState)
 	{
 		if (onFreezeEvent)
 			return;
 
-		if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) 
-		{
-			if(UIManager.instance != null)
-			{
-				if (UIManager.instance.buttonPressed) 
-				{
-					Jump(); 
-				}
-
-//				if(UIManager.instance.specButtonPressed)
-//				{
-//					if(playerSkill != null)
-//					{
-//						playerSkill.Activate();
-//					}
-//				}
-			}
-
-		} else {
-
-			if(UIManager.instance.GetRRect().Contains(Input.mousePosition))
-			{
-				if (Input.GetButtonDown ("Fire1") || Input.GetButtonDown ("Jump")) 
-				{
-					Jump();
-				}
-
-			} else
-			if(Input.GetKeyDown(KeyCode.Space))
-			{
-				Jump();
-			}
-
-//			if(UIManager.instance.specButtonPressed)
-//			{
-//				if(playerSkill != null)
-//				{
-//					playerSkill.Activate();
-//				}
-//			}
-		}
+		if (inputState.JumpPressed)
+			Jump();
 	}
 
 	public float accelBonusRate = .2F;
