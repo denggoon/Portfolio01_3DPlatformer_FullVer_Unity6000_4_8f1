@@ -24,6 +24,8 @@ public class ReplayGameplay : MonoBehaviour {
 	// Use this for initialization
 	void OnDestroy()
 	{
+		if (GameRuleManager.instance == null) return;
+		
 		GameRuleManager.instance.replayer = null;
 	}
 

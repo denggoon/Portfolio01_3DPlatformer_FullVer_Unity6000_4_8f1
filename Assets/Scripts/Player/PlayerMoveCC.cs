@@ -15,7 +15,6 @@ public class PlayerMoveCC : MonoBehaviour
 	private RecordGameplay replay;
 	public CNJoystick cnJoystick;
 	private PlayerInputAdapter inputAdapter;
-	private PlayerInputModeController inputModeController;
 	new public Transform transform;
 
 	public E_PLAYER_ATTACK_TYPE ePlayerAtkType = E_PLAYER_ATTACK_TYPE.HOPNBOP;
@@ -135,11 +134,6 @@ public class PlayerMoveCC : MonoBehaviour
 		if (inputAdapter == null)
 			inputAdapter = gameObject.AddComponent<PlayerInputAdapter>();
 
-		inputModeController = GetComponent<PlayerInputModeController>();
-
-		if (inputModeController == null)
-			inputModeController = gameObject.AddComponent<PlayerInputModeController>();
-
 		if(animator == null)
 			animator = GetComponent<Animator> ();
 
@@ -178,6 +172,8 @@ public class PlayerMoveCC : MonoBehaviour
 
 	void OnDestroy()
 	{
+		if (GameRuleManager.instance == null) return;
+		
 		GameRuleManager.instance.player = null;
 		GameRuleManager.instance.playerMove = null;
 		GameRuleManager.instance.playerHealth = null;
@@ -190,7 +186,6 @@ public class PlayerMoveCC : MonoBehaviour
 
 		cnJoystick = FindAnyObjectByType<CNJoystick>();
 		inputAdapter.SetJoystick(cnJoystick);
-		inputModeController.SetJoystick(cnJoystick);
 
 //		socialTimer = socialWaitTime;
 
@@ -245,7 +240,7 @@ public void RegisterDefaultValues()
 			PlayerPrefs.SetFloat("DefaultMaxSpeedReach", this.maxSpeedReachPercentage);
 		}
 
-		inputModeController.RegisterDefaultInputMode();
+		inputAdapter.RegisterDefaultInputMode();
 	}
 
 void LoadSavedValues()
@@ -275,7 +270,7 @@ void LoadSavedValues()
 			this.airIdleLimitValue = PlayerPrefs.GetFloat("AirIdleLimit");
 		}
 
-		inputModeController.LoadSavedInputMode();
+		inputAdapter.LoadSavedInputMode();
 	}
 
 	float timer;
