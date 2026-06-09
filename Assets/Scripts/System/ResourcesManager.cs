@@ -15,11 +15,6 @@ public class ResourcesManager : MonoBehaviour
             if (instance_ == null)
             {
                 GameObject obj = new GameObject("_ResourcesManager");
-
-                GameObject bundleManagerObj = GameObject.Find("_BundleManager");
-                if (bundleManagerObj != null)
-                    obj.transform.SetParent(bundleManagerObj.transform);
-
                 instance_ = obj.AddComponent<ResourcesManager>();
             }
             return instance_;

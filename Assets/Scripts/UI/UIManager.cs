@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine.SceneManagement;
+using UnityEngine.AddressableAssets;
 
 public class UIManager : MonoBehaviour {
 
@@ -296,19 +297,10 @@ public class UIManager : MonoBehaviour {
 
 	public void Retry()
 	{
-		if (BundleManager.instance == null) 
-		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name); //에셋번들은 안먹힘 
-
-		} else {
-
-			//			AsyncOperation sceneAsync = Application.LoadLevelAsync (BundleManager.instance.currentSceneName);
-			SceneManager.LoadSceneAsync (BundleManager.instance.currentSceneName);
-		}
-
+		string sceneName = PlayerPrefs.GetString(PrefKeys.LoadingSceneName);
+		Addressables.LoadSceneAsync(sceneName, LoadSceneMode.Single);
 		isGameFinished = false;
 		isSuccess = false;
-
 		Time.timeScale = 1F;
 	}
 
@@ -318,16 +310,6 @@ public class UIManager : MonoBehaviour {
 		isSuccess = false;
 
 		SceneManager.LoadScene("MainScene");
-		BundleManager.instance.Unload(BundleManager.instance.currentSceneName.ToLower());
-
-//		if(Application.levelCount == Application.loadedLevel + 1)
-//		{
-//			Application.LoadLevel("MainScene");
-//			BundleManager.instance.Unload(PlayerPrefs.GetString("LoadingSceneName").ToLower());
-//		} else {
-//
-//			Application.LoadLevel(Application.loadedLevel + 1);
-//		}
 	}
 
 	public void MainMenu()

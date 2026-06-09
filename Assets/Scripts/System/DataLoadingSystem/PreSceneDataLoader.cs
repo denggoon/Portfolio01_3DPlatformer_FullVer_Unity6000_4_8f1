@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.IO;
 
 public class PreSceneDataLoader : MonoBehaviour 
 {
@@ -32,21 +31,9 @@ public class PreSceneDataLoader : MonoBehaviour
 		instance_ = this;
 	}
 
-	IEnumerator Start () 
+	IEnumerator Start ()
 	{
-		string sceneName = PlayerPrefs.GetString(PrefKeys.LoadingSceneName);
-
-//		yield return StartCoroutine(BundleManager.instance.LoadBundleCoroutine (sceneName.ToLower()));
-
 		yield return StartCoroutine (bankLoader.Execute ());
-
 		yield return StartCoroutine (sceneLoader.Execute ());
-
-	}
-
-	void Update()
-	{
-		if(finishedDownloadingScene == false)
-			uiTxtProgress.text = BundleManager.instance.statusMsg;
 	}
 }

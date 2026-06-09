@@ -363,9 +363,6 @@ public class GameRuleManager : MonoBehaviour {
 		if(SoundBoard.instance != null)
 			SoundBoard.instance.PlayFromSoundBoard(SoundID.JGL_GameClear, this.transform.position);
 
-        // QQQ 임시로 star는 1, currentGold를 score로 대신한다. by kks
-		//if(NviusNetManager.instance != null && BundleManager.instance != null)
-  //      	NviusNetManager.instance.SaveStageRecord(BundleManager.instance.currentSceneName, 1, currentGold);
 	}
 
 	public void GameOver()

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using System.IO;
 using UnityEngine.SceneManagement;
 
 public class PreloadingManager : MonoBehaviour {
@@ -34,23 +33,7 @@ public class PreloadingManager : MonoBehaviour {
 			yield break;
 		}
 
-        //NviusNetManager.instance.Login(true);
-
-        //while (NviusNetManager.instance.isLoginProcessDone == false) //성공-실패여부가 판가름 날때까지 대기 
-        //{
-        //    Debug.Log("Login Process: " + NviusNetManager.instance.isLoginProcessDone);
-        //    statusText.text = "로그인 진행중..."; 
-        //    yield return null;
-        //}
-
-        //if (NviusNetManager.instance.isLoggedIn) 
-        //{
-			yield return StartCoroutine (PhaseTwo ());
-        //} else {
-
-        //    InquireOfflineMode(); //로그인 실패시 오프라인모드로 마저 진행할것인지 물어본다 
-
-        //}
+		yield return StartCoroutine (PhaseTwo ());
 	}
 
 	public void InquireOfflineMode() //오프라인으로 진행할것인지 물어보는 곳 
@@ -98,48 +81,9 @@ public class PreloadingManager : MonoBehaviour {
 		}
 	}
 
-	string strBundleFailReason;
-
-	IEnumerator LoadAssetBundles()
-	{
-		strBundleFailReason = string.Empty;
-
-		yield return StartCoroutine(BundleManager.instance.LoadManifest(BundleManager.instance.platform));
-
-		if (!BundleManager.instance.IsManifestLoaded) 
-		{
-			strBundleFailReason = "Manifest 로딩 실패"; 
-			yield break;
-		}
-		
-		yield return StartCoroutine(BundleManager.instance.LoadBundleCoroutine("commonprefabs"));
-
-		if (!BundleManager.instance.IsBundleLoaded ("commonprefabs")) 
-		{
-			strBundleFailReason = "공용 프리팹 로딩 실패"; 
-			yield break;
-		}
-		
-		yield return StartCoroutine(ObjectPooler.instance.Initialze());
-
-		if (!ObjectPooler.instance.IsPoolerInitialized) 
-		{
-			strBundleFailReason = "오브젝트 풀러 초기화 실패"; 
-			yield break;
-		}
-
-		assetLoadingComplete = true;
-	}
-
 	// Update is called once per frame
 	void Update () 
 	{
-		if (!statusFine) 
-		{
-			if(!string.IsNullOrEmpty(BundleManager.instance.statusMsg))
-				statusText.text = BundleManager.instance.statusMsg;
-		}
-		
 		if (statusFine) 
 		{
 			if (Input.GetMouseButtonDown (0)) 
