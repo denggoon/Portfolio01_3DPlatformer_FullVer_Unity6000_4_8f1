@@ -92,6 +92,11 @@ public class EnemyMovement : MonoBehaviour
     public int dropCount = 3;
     private float _objDropForce = 270F;
 
+    private const float DropSpawnDelay   = 0.02F;
+    private const float ColliderCenterY  = 0.25F;
+    private const float ColliderRadius   = 0.15F;
+    private const float ColliderHeight   = 0.5F;
+
     public Animation foundAni;
     public Animation lostAni;
     public SkinnedMeshRenderer[] stunnedBody;
@@ -110,9 +115,9 @@ public class EnemyMovement : MonoBehaviour
 
         if (autoColliderSetting)
         {
-            _myCollider.center = new Vector3(0F, .25F, 0F);
-            _myCollider.radius = .15F;
-            _myCollider.height = .5F;
+            _myCollider.center = new Vector3(0F, ColliderCenterY, 0F);
+            _myCollider.radius = ColliderRadius;
+            _myCollider.height = ColliderHeight;
         }
 
         if (animator == null)
@@ -276,11 +281,11 @@ public class EnemyMovement : MonoBehaviour
             vision.playerInSight = false;
             // LostState로 직접 전환하여 잃어버림 처리
             TransitionTo(new EnemyLostState());
-            Invoke("activeVision", stunWaitTime);
+            StartCoroutine(ActiveVisionDelayed(stunWaitTime));
         }
         else
         {
-            StartCoroutine("StartStun", stomped);
+            StartCoroutine(StartStun(stomped));
         }
 
         vision.lastPlayerSighted = vision.unreachablePos;
@@ -299,7 +304,7 @@ public class EnemyMovement : MonoBehaviour
             if (hasDroppable)
             {
                 this.gameObject.SetActive(false);
-                Invoke("makeDropItems", 0.02F);
+                Invoke(nameof(MakeDropItems), DropSpawnDelay);
             }
             else
             {
@@ -308,15 +313,16 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    void activeVision()
+    IEnumerator ActiveVisionDelayed(float delay)
     {
+        yield return new WaitForSeconds(delay);
         vision.transform.gameObject.SetActive(true);
         var contactCollider = transform.Find("MeleeContactCollider")?.gameObject;
         if (contactCollider != null)
             contactCollider.SetActive(true);
     }
 
-    void makeDropItems()
+    void MakeDropItems()
     {
         if (dropFxObj != null)
             ResourcesManager.instance.PopEffect(dropFxObj, this.transform.position);
