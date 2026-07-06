@@ -1,68 +1,21 @@
-﻿using UnityEngine;
-using System.Collections;
+using UnityEngine;
 
-public class PlayerAnimEventCaller : AnimatorEventCaller 
+public class PlayerAnimEventCaller : AnimatorEventCaller
 {
-	#region PlayerSound Functions
+    private PlayerMoveCC _player;
+    private PlayerFX     _playerFx;
 
-	public void FootSound()
-	{
-		parentObj.SendMessage ("FootSound", SendMessageOptions.DontRequireReceiver);
-	}
+    protected override void Awake()
+    {
+        base.Awake();
+        _player   = parentObj.GetComponent<PlayerMoveCC>();
+        _playerFx = parentObj.GetComponent<PlayerFX>();
+    }
 
-	#endregion
-
-	#region PlayerFX Functions
-
-	public void ToggleCommonFx(int intFlag)
-	{
-		bool flag = false;
-
-		if (intFlag == 1)
-			flag = true;
-
-		parentObj.SendMessage ("ToggleCommonFx", flag, SendMessageOptions.DontRequireReceiver);
-	}
-
-	public void PlayMoveFX(int intFlag)
-	{
-		bool flag = false;
-		
-		if (intFlag == 1)
-			flag = true;
-
-		parentObj.SendMessage ("PlayMoveFX", flag, SendMessageOptions.DontRequireReceiver);
-	}
-
-	public void ToggleAirTrail(int intFlag)
-	{
-		bool flag = false;
-		
-		if (intFlag == 1)
-			flag = true;
-
-		parentObj.SendMessage ("ToggleAirTrail", flag, SendMessageOptions.DontRequireReceiver);
-	}
-
-	public void ToggleSpecAirTrail(int intFlag)
-	{
-		bool flag = false;
-		
-		if (intFlag == 1)
-			flag = true;
-
-		parentObj.SendMessage ("ToggleSpecAirTrail", flag, SendMessageOptions.DontRequireReceiver);
-	}
-
-	public void ToggleAllTrail(int intFlag)
-	{
-		bool flag = false;
-		
-		if (intFlag == 1)
-			flag = true;
-
-		parentObj.SendMessage ("ToggleAllTrail", flag, SendMessageOptions.DontRequireReceiver);
-	}
-
-	#endregion
+    public void FootSound()                  => _player?.FootSound();
+    public void ToggleCommonFx(int flag)     => _playerFx?.ToggleCommonFx(flag != 0);
+    public void PlayMoveFX(int flag)         => _playerFx?.PlayMoveFX(flag != 0);
+    public void ToggleAirTrail(int flag)     => _playerFx?.ToggleAirTrail(flag != 0);
+    public void ToggleSpecAirTrail(int flag) => _playerFx?.ToggleSpecAirTrail(flag != 0);
+    public void ToggleAllTrail(int flag)     => _playerFx?.ToggleAllTrail(flag != 0);
 }

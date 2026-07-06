@@ -1,33 +1,17 @@
-﻿using UnityEngine;
-using System.Collections;
+using UnityEngine;
 
-public class MonsterAnimEventCaller : AnimatorEventCaller {
+public class MonsterAnimEventCaller : AnimatorEventCaller
+{
+    private EnemyMovement _enemy;
 
-	#region PlayerSound Functions
-	
-	public void FootSound()
-	{
-		parentObj.SendMessage ("FootSound", SendMessageOptions.DontRequireReceiver);
-	}
-	
-	#endregion
+    protected override void Awake()
+    {
+        base.Awake();
+        _enemy = parentObj.GetComponent<EnemyMovement>();
+    }
 
-	#region Monster Functions
-
-	public void ProjectileAttack()
-	{
-		parentObj.SendMessage ("ProjectileAttack", SendMessageOptions.DontRequireReceiver);
-	}
-
-	public void RaycastAttack()
-	{
-		parentObj.SendMessage ("RaycastAttack", SendMessageOptions.DontRequireReceiver);
-	}
-
-	public void MonsterDeath()
-	{
-		parentObj.SendMessage ("MonsterDeath", SendMessageOptions.DontRequireReceiver);
-	}
-
-	#endregion
+    public void FootSound()        => _enemy?.FootSound();
+    public void ProjectileAttack() => _enemy?.weapon?.ProjectileAttack();
+    public void RaycastAttack()    => _enemy?.weapon?.RaycastAttack();
+    public void MonsterDeath()     => _enemy?.MonsterDeath();
 }

@@ -21,7 +21,8 @@ public class MecanimStateEventCaller : StateMachineBehaviour {
 
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
-		if (!string.IsNullOrEmpty (enterFuncName)) 
+		updateEventFired = false;
+		if (!string.IsNullOrEmpty (enterFuncName))
 		{
 			MecanimSendMessage(animator, enterFuncName, enterArgsName);
 		}

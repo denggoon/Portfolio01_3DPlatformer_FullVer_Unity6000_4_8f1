@@ -120,7 +120,7 @@ public class EnemyWeapon : MonoBehaviour {
 		}
 	}
 
-	void ProjectileAttack() //Vector3 shootDir)
+	public void ProjectileAttack() //Vector3 shootDir)
 	{
 		if(string.IsNullOrEmpty(projObjStr)) return; //발사체가 설정되어 있지 않으면 아무것도 하지 않음 
 

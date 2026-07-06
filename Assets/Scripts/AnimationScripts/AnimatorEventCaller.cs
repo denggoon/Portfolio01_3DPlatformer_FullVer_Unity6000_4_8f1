@@ -9,7 +9,7 @@ public class AnimatorEventCaller : MonoBehaviour {
 
 	public string dedicatedFuncName;
 
-	void Awake()
+	protected virtual void Awake()
 	{
 		transform = GetComponent<Transform> ();
 		parentObj = transform.parent.gameObject;
