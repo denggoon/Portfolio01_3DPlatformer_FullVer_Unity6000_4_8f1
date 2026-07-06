@@ -672,7 +672,7 @@ public class EnemyMovement : MonoBehaviour {
 		if (dropFxObj != null) {
 			ResourcesManager.instance.PopEffect (dropFxObj, this.transform.position);
 		} else {
-			ResourcesManager.instance.PopEffect ("Fx_M_Die_01", this.transform.position);
+			ResourcesManager.instance.PopEffect (AddressableKeys.Fx.M_Die01, this.transform.position);
 		}
 		
 		for(int i=0; i<dropCount; i++)

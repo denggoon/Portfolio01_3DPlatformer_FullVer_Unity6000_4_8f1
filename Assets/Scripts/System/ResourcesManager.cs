@@ -85,6 +85,8 @@ public class ResourcesManager : MonoBehaviour
 
     public void PopEffect(string fxName, Vector3 pos)
     {
+        if (string.IsNullOrEmpty(fxName)) return;
+
         if (ObjectPooler.instance != null)
         {
             var pooled = ObjectPooler.instance.ObjPop(fxName, pos);
@@ -98,6 +100,8 @@ public class ResourcesManager : MonoBehaviour
 
     public void AttachEffect(string fxName, Transform parent)
     {
+        if (string.IsNullOrEmpty(fxName)) return;
+
         GameObject loadedObj = null;
         GameObject attachFx = null;
 

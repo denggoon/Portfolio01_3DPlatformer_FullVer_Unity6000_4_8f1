@@ -54,7 +54,7 @@ public class EnemyStompPlate : MonoBehaviour {
 				bool jumpingDown = (GameRuleManager.instance.playerMove.fallDelta < 0 ? true : false);
 				if(GameRuleManager.instance.playerMove.transform.position.y > movement.transform.position.y + stompableHeight && jumpingDown == true)
 				{
-					ResourcesManager.instance.PopEffect ("FX_JumpAttack_01", this.transform.position);
+					ResourcesManager.instance.PopEffect (AddressableKeys.Fx.JumpAttack01, this.transform.position);
 					GameRuleManager.instance.playerMove.Jump (true);
 					movement.Stun(GameRuleManager.instance.playerMove.attackDamage, true); //설정된 데미지 만큼 줍니다. 
 				}

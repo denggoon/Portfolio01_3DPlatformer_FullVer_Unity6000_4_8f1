@@ -376,9 +376,9 @@ void LoadSavedValues()
             if (currentY > transform.position.y)
             {
 				if (groundName.Contains("Cloud")) {
-					playerFX.PopEffect("Fx_Landing_02"); //Cloud 착지 효과 표시 
+					playerFX.PopEffect(AddressableKeys.Fx.Landing02);
 				} else {
-					playerFX.PopEffect("Fx_Landing_01"); //착지 효과 표시 
+					playerFX.PopEffect(AddressableKeys.Fx.Landing01);
 				}
                 
                 playerFX.ToggleOffMoveFX();
