@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System;
 
 public enum E_GAME_RULE
 {
@@ -28,6 +29,13 @@ public class GameRuleManager : MonoBehaviour {
 			return instance_;
 		}
 	}
+
+	// UI 레이어와의 결합을 끊기 위한 이벤트 선언
+	public event Action<int> OnGoldChanged;
+	public event Action<int> OnGemCollected;
+	public event Action      OnStageClear;
+	public event Action      OnGameOver;
+	public event Action      OnRespawn;
 
 	public Vector3 initPos;
 	public Quaternion initRot;
@@ -127,10 +135,6 @@ public class GameRuleManager : MonoBehaviour {
 			SoundBoard.instance.PlayFromSoundBoard (BGMPath);
 			SoundBoard.instance.PlayFromSoundBoard (AmbientPath);
 		}
-
-		UIManager.instance.whiteMatte.FadeIn(UIManager.instance.fadeInTime);
-		UIManager.instance.ShowStageName ();
-		UIManager.instance.UpdateGold (currentGold);
 
 		totalGold = FindObjectsOfType<ItemGold>().Length;
 		collectGoal = FindObjectsOfType<ItemGem>().Length;
@@ -309,7 +313,7 @@ public class GameRuleManager : MonoBehaviour {
 	{
 		currentGold += no;
 
-		UIManager.instance.UpdateGold (currentGold);
+		OnGoldChanged?.Invoke(currentGold);
 	}
 
 	public void AddGem(int no, Vector3 checkpointPos, bool isOpenExit = false)
@@ -321,7 +325,7 @@ public class GameRuleManager : MonoBehaviour {
 		if(SoundBoard.instance != null)
 			SoundBoard.instance.PlayFromSoundBoard(SoundID.Voice_Start, playerMove.transform.position);
 
-		UIManager.instance.gemCollected = currentGem;
+		OnGemCollected?.Invoke(currentGem);
 
 		switch(eGameRule)
 		{
@@ -358,7 +362,7 @@ public class GameRuleManager : MonoBehaviour {
 
 		eGameStatus = E_GAME_STATUS.GAME_OVER;
 
-		UIManager.instance.ShowClearMsg();
+		OnStageClear?.Invoke();
 
 		if(SoundBoard.instance != null)
 			SoundBoard.instance.PlayFromSoundBoard(SoundID.JGL_GameClear, this.transform.position);
@@ -374,7 +378,7 @@ public class GameRuleManager : MonoBehaviour {
 		Destroy(GameRuleManager.instance.playerMove.cnJoystick);
 		eGameStatus = E_GAME_STATUS.GAME_OVER;
 
-		UIManager.instance.ShowFailMsg();
+		OnGameOver?.Invoke();
 
 		if(SoundBoard.instance != null)
 			SoundBoard.instance.PlayFromSoundBoard(SoundID.JGL_GameOver, this.transform.position);
@@ -389,10 +393,7 @@ public class GameRuleManager : MonoBehaviour {
 				Destroy(GameRuleManager.instance.playerMove.mainTransform.gameObject);
 			}
 
-			UIManager.instance.isGameFinished = false;
-			UIManager.instance.isSuccess = true;
-
-			UIManager.instance.ClosePauseAndResumeGame();
+			OnRespawn?.Invoke();
 
 			Vector3 respawnPoint = new Vector3(latestCheckPoint.x, latestCheckPoint.y + 2F, latestCheckPoint.z);
 

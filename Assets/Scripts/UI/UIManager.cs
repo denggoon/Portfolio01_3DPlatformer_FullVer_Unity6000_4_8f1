@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
+using System;
 
 public class UIManager : MonoBehaviour {
 
@@ -78,6 +79,14 @@ public class UIManager : MonoBehaviour {
 
 	void OnDestroy()
 	{
+		if (GameRuleManager.instance != null)
+		{
+			GameRuleManager.instance.OnGoldChanged  -= UpdateGold;
+			GameRuleManager.instance.OnGemCollected -= OnGemCollectedHandler;
+			GameRuleManager.instance.OnStageClear   -= ShowClearMsg;
+			GameRuleManager.instance.OnGameOver     -= ShowFailMsg;
+			GameRuleManager.instance.OnRespawn      -= HandleRespawn;
+		}
 		instance_ = null;
 	}
 
@@ -107,6 +116,17 @@ public class UIManager : MonoBehaviour {
 		fpsDisplaySB.Append (" Inch Wide)");
 
 //		StartCoroutine (ShowFPSDisplay ());
+
+		GameRuleManager.instance.OnGoldChanged  += UpdateGold;
+		GameRuleManager.instance.OnGemCollected += OnGemCollectedHandler;
+		GameRuleManager.instance.OnStageClear   += ShowClearMsg;
+		GameRuleManager.instance.OnGameOver     += ShowFailMsg;
+		GameRuleManager.instance.OnRespawn      += HandleRespawn;
+
+		// 게임 시작 시 UI 초기화 (기존 GameRuleManager.Start()에서 이동)
+		whiteMatte.FadeIn(fadeInTime);
+		ShowStageName();
+		UpdateGold(GameRuleManager.instance.currentGold);
 	}
 
 //	void OnGUI()
@@ -167,6 +187,18 @@ public class UIManager : MonoBehaviour {
 		goldSB.Append (gold);
 
 		uiTxtGoldValue.text = goldSB.ToString ();
+	}
+
+	private void OnGemCollectedHandler(int value)
+	{
+		gemCollected = value;
+	}
+
+	private void HandleRespawn()
+	{
+		isGameFinished = false;
+		isSuccess = true;
+		ClosePauseAndResumeGame();
 	}
 
 	void Update()
