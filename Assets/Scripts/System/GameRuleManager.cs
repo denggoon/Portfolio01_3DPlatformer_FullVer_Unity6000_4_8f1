@@ -374,8 +374,6 @@ public class GameRuleManager : MonoBehaviour {
 		if (eGameStatus == E_GAME_STATUS.GAME_OVER)
 			return;
 
-		GameRuleManager.instance.playerMove.cnJoystick.Disable();
-		Destroy(GameRuleManager.instance.playerMove.cnJoystick);
 		eGameStatus = E_GAME_STATUS.GAME_OVER;
 
 		OnGameOver?.Invoke();

@@ -173,19 +173,29 @@ public class PlayerMoveCC : MonoBehaviour
 	void OnDestroy()
 	{
 		if (GameRuleManager.instance == null) return;
-		
-		GameRuleManager.instance.player = null;
-		GameRuleManager.instance.playerMove = null;
+
+		GameRuleManager.instance.OnGameOver  -= HandleGameOver;
+		GameRuleManager.instance.player       = null;
+		GameRuleManager.instance.playerMove   = null;
 		GameRuleManager.instance.playerHealth = null;
 	}
 
-	void Start () 
+	void HandleGameOver()
+	{
+		if (cnJoystick == null) return;
+		cnJoystick.Disable();
+		Destroy(cnJoystick);
+	}
+
+	void Start ()
 	{
 //		ePlayerAtkType = E_PLAYER_ATTACK_TYPE.RUNNBUMP;
 		GameRuleManager.instance.isPlayerScriptSuccess = false;
 
 		cnJoystick = FindAnyObjectByType<CNJoystick>();
 		inputAdapter.SetJoystick(cnJoystick);
+
+		GameRuleManager.instance.OnGameOver += HandleGameOver;
 
 //		socialTimer = socialWaitTime;
 
