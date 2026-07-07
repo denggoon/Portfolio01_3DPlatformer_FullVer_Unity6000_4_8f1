@@ -23,9 +23,9 @@ public class BankLoader : MonoBehaviour {
 	
 	public IEnumerator Execute () 
 	{
-		if (DataFileManager.instance != null) 
+		if (DataFileManager.Instance != null) 
 		{
-			if (DataFileManager.instance.eFileLoadMode == FILE_LOAD_MODE.OFFLINE) //온라인에서 받는 방식이 아닌 APK에 포함되어있는 뱅크파일을 불러오는경우 뱅크 로딩을 할필요가 없습니다. 
+			if (DataFileManager.Instance.eFileLoadMode == FILE_LOAD_MODE.OFFLINE) //온라인에서 받는 방식이 아닌 APK에 포함되어있는 뱅크파일을 불러오는경우 뱅크 로딩을 할필요가 없습니다. 
 				yield break;
 		}
 

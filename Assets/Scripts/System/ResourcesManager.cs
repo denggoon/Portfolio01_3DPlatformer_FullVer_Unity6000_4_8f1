@@ -4,34 +4,14 @@ using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class ResourcesManager : MonoBehaviour
+public class ResourcesManager : AutoCreateSceneSingleton<ResourcesManager>
 {
-    private static ResourcesManager instance_;
-
-    public static ResourcesManager instance
-    {
-        get
-        {
-            if (instance_ == null)
-            {
-                GameObject obj = new GameObject("_ResourcesManager");
-                instance_ = obj.AddComponent<ResourcesManager>();
-            }
-            return instance_;
-        }
-    }
-
-    void Awake()
-    {
-        instance_ = this;
-    }
-
-    void OnDestroy()
+    protected override void OnDestroy()
     {
         // Addressables가 PlayMode 종료 시 자체 정리를 먼저 수행하므로
         // 핸들 Release 없이 캐시 참조만 제거한다
         _goHandleCache.Clear();
-        instance_ = null;
+        base.OnDestroy();
     }
 
     private Dictionary<string, AsyncOperationHandle<GameObject>> _goHandleCache =

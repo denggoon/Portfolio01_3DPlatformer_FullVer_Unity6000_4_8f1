@@ -1,28 +1,8 @@
 ﻿using UnityEngine;
 
-public class ShaderManager : MonoBehaviour {
-
-	private static ShaderManager instance_;
-	
-	public static ShaderManager instance
-	{
-		get
-		{
-			return instance_;
-		}
-	}
-
-	void OnDestroy()
-	{
-		instance_ = null;
-	}
+public class ShaderManager : SceneSingleton<ShaderManager> {
 
 	public Shader[] shaderList;
-
-	void Awake()
-	{
-		instance_ = this;
-	}
 
 	void Start()
 	{

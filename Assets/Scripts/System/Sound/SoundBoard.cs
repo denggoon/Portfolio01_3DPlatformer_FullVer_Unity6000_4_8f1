@@ -11,48 +11,33 @@ public class SoundInfo
 	public FMOD.GUID GUID;
 }
 
-public class SoundBoard : MonoBehaviour
+public class SoundBoard : SceneSingleton<SoundBoard>
 {
 	public List<SoundInfo> soundInfoList;
 
 	public TextAsset balanceFile;
 
-	private static SoundBoard instance_;
-	
-	public static SoundBoard instance
+	protected override void Awake()
 	{
-		get
-		{
-			return instance_;
-		}
-	}
-	
-	void Awake() 
-	{
-		instance_ = this;
-		
+		base.Awake();
+
 		JsonMapper.RegisterImporter<double, float>(DoubleToFloat);
-		
+
 		if(balanceFile != null)
 		{
 			JsonData json = JsonMapper.ToObject(balanceFile.text);
 			soundInfoList = JsonMapper.ToObject<List<SoundInfo>>(json["root"].ToJson());
 		}
 	}
-	
+
 	float DoubleToFloat(double val)
 	{
 		return (float)val;
 	}
-	
+
 	double FloatToDouble(float val)
 	{
 		return (double)val;
-	}
-	
-	void OnDestroy()
-	{
-		instance_ = null; 
 	}
 
 	public virtual void PlayFromSoundBoard(string givenID)

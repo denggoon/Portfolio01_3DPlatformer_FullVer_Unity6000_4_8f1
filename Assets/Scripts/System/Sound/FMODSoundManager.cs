@@ -4,26 +4,8 @@ using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
 
-public class FMODSoundManager : MonoBehaviour
+public class FMODSoundManager : SceneSingleton<FMODSoundManager>
 {
-	private static FMODSoundManager instance_;
-
-	public static FMODSoundManager instance
-	{
-		get
-		{
-			return instance_;
-		}
-	}
-
-	void OnDestoy()
-	{
-		StopBGM ();
-		StopCondBGM ();
-		StopAmbient ();
-		instance_ = null;
-	}
-
 	new public Transform transform;
 
 	private EventInstance BGMsource_;
@@ -42,9 +24,9 @@ public class FMODSoundManager : MonoBehaviour
 	public FMOD.Studio.System fmodStudioSys;
 	FMOD.System fmodLowLvSys;
 
-	void Awake() 
+	protected override void Awake()
 	{
-		instance_ = this;
+		base.Awake();
 		transform = GetComponent<Transform>();
 
 		fmodStudioSys = RuntimeManager.StudioSystem;
@@ -68,7 +50,7 @@ public class FMODSoundManager : MonoBehaviour
         }
     }
 
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		BGMsource_.stop (FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
@@ -76,7 +58,7 @@ public class FMODSoundManager : MonoBehaviour
 
 		condBGMsrc_.stop (FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
-		instance_ = null;
+		base.OnDestroy();
 	}
 
 	void Update()

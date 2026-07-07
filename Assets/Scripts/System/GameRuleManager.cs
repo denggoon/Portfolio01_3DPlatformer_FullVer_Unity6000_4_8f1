@@ -18,17 +18,7 @@ public enum E_GAME_STATUS
 }
 
 //[ExecuteInEditMode]
-public class GameRuleManager : MonoBehaviour {
-
-	private static GameRuleManager instance_;
-
-	public static GameRuleManager instance
-	{
-		get
-		{
-			return instance_;
-		}
-	}
+public class GameRuleManager : SceneSingleton<GameRuleManager> {
 
 	// UI 레이어와의 결합을 끊기 위한 이벤트 선언
 	public event Action<int> OnGoldChanged;
@@ -39,11 +29,6 @@ public class GameRuleManager : MonoBehaviour {
 
 	public Vector3 initPos;
 	public Quaternion initRot;
-
-	void OnDestroy()
-	{
-		instance_ = null;
-	}
 
 	public E_GAME_RULE eGameRule = E_GAME_RULE.COLLECT_IN_TIME;
 	public E_GAME_STATUS eGameStatus = E_GAME_STATUS.GAME_READY;
@@ -88,9 +73,9 @@ public class GameRuleManager : MonoBehaviour {
 
 	public SideScrollCamera sideCam;
 
-	void Awake()
+	protected override void Awake()
 	{
-		instance_ = this;
+		base.Awake();
 		startPrefabStr = "startprefab";
 		exitPrefabStr = "exitprefab";
 

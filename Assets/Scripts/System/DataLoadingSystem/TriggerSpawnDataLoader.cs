@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using LitJson;
-using Nvius.Util;
 using UnityEngine.SceneManagement;
 
 public class TriggerSpawnDataLoader : Singleton<TriggerSpawnDataLoader>

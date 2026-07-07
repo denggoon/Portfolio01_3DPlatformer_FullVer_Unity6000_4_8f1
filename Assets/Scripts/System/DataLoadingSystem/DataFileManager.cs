@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public enum FILE_LOAD_MODE
@@ -7,35 +7,19 @@ public enum FILE_LOAD_MODE
 	ONLINE,
 }
 
-public class DataFileManager : MonoBehaviour {
-
-	private static DataFileManager instance_;
-
-	public static DataFileManager instance
-	{
-		get
-		{
-			return instance_;
-		}
-	}
+// 앱 전역에서 유지되어야 하는 데이터라 씬 배치 없이도 찾아지는 Singleton<T>를 사용한다
+// (TriggerSpawnDataLoader와 같은 부류 — GameRuleManager 등 레벨마다 새로 시작해야 하는
+// 씬 스코프 매니저는 SceneSingleton/AutoCreateSceneSingleton을 사용한다)
+public class DataFileManager : Singleton<DataFileManager> {
 
 	public FILE_LOAD_MODE eFileLoadMode = FILE_LOAD_MODE.ONLINE;
 
 	void Awake()
 	{
-		instance_ = this;
-
 		PlayerPrefs.DeleteKey ("FileLoadMode");
 
 		PlayerPrefs.SetInt(PrefKeys.FileLoadMode, System.Convert.ToInt32(eFileLoadMode));
 
 		DontDestroyOnLoad (this.gameObject);
 	}
-
-	void OnDestroy()
-	{
-		instance_ = null;
-	}
-
-
 }

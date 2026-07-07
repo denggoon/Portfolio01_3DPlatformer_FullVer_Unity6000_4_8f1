@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/* 
+/*
  * 각종 UI에 달린 함수들을 리스트에 등록된 순서대로 호출하는 매니저 스크립트입니다.
  */
 
@@ -26,7 +26,7 @@ public class UITask
 	public float postDelay; //함수가 끝나고 몇초를 기다린후 다음 함수로 놈어갈지에 대한 값 설정입니다. 
 }
 
-public class UITimelineManager : MonoBehaviour 
+public class UITimelineManager : SceneSingleton<UITimelineManager>
 {
 	public string sendMsgPrefix = "UISendMessage"; 
 	//UITimelineManager는 UIMonoBehaviour를 상속받는 클래스들에 한해서 관리하는 스크립트입니다.
@@ -49,26 +49,6 @@ public class UITimelineManager : MonoBehaviour
 	public void SetComplete(bool flag)
 	{
 		taskComplete = flag;
-	}
-
-	private static UITimelineManager instance_;
-	
-	public static UITimelineManager instance
-	{
-		get
-		{
-			return instance_;
-		}
-	}
-
-	void OnDestroy()
-	{
-		instance_ = null;
-	}
-
-	void Awake()
-	{
-		instance_ = this;
 	}
 
 	void Start()

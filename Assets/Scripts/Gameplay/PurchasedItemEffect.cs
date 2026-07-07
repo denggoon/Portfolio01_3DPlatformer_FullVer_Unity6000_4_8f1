@@ -20,63 +20,34 @@ public class ItemEffect
 	public float effect_duration;
 }
 
-public class PurchasedItemEffect : MonoBehaviour {
-
-	private static PurchasedItemEffect instance_;
-
-	public static PurchasedItemEffect instance
-	{
-		get
-		{
-			if(instance_ == null)
-			{
-				GameObject itemFxObj = new GameObject("_PurchasedItemEffect");
-//				Transform itemFxObjTrans = itemFxObj.GetComponent<Transform>();
-//				
-//				if(GameRuleManager.instance != null)
-//				{
-//									
-//					itemFxObjTrans.SetParent(GameRuleManager.instance.transform);
-//				}
-				
-				instance_ = itemFxObj.AddComponent<PurchasedItemEffect>();
-			}
-			
-			return instance_;
-		}
-	}
+public class PurchasedItemEffect : AutoCreateSceneSingleton<PurchasedItemEffect> {
 
 	public TextAsset balanceFile;
 	public List<ItemEffect> itemBalance;
 	public List<ItemEffect> currentItemFxs = new List<ItemEffect>();
 	public List<int> purchasedItems = new List<int>();
 
-	void Awake() 
+	protected override void Awake()
 	{
-		instance_ = this;
+		base.Awake();
 
 		balanceFile = ResourcesManager.instance.ResourcesLoadCached ("PurchasedItemBalance") as TextAsset;
-		
+
 		JsonMapper.RegisterImporter<double, float>(DoubleToFloat);
 		itemBalance = JsonMapper.ToObject<List<ItemEffect>>(balanceFile.text);
 
 		Initialize ();
-		
+
 	}
-	
+
 	float DoubleToFloat(double val)
 	{
 		return (float)val;
 	}
-	
+
 	double FloatToDouble(float val)
 	{
 		return (double)val;
-	}
-
-	void OnDestroy()
-	{
-		instance_ = null;
 	}
 
 	public float GetItemEffectValue(PURCHASED_ITEM enumVal)

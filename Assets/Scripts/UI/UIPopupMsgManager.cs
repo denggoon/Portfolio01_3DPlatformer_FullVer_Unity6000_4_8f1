@@ -4,32 +4,32 @@ using UnityEngine.UI;
 
 public class UIPopupMsgManager : MonoBehaviour {
 
-	private static UIPopupMsgManager instance_;
+	private static UIPopupMsgManager _instance;
 //	private new Transform transform;
 
 	public static UIPopupMsgManager instance
 	{
 		get
 		{
-			if (instance_ == null) 
+			if (_instance == null) 
 			{
 				GameObject goPopupMsgManager = (GameObject)GameObject.Instantiate(ResourcesManager.instance.ResourcesLoadCached("_UIPopupManagerCanvas"), Vector3.zero, Quaternion.identity);
 
-				instance_ = goPopupMsgManager.GetComponent<UIPopupMsgManager>();
+				_instance = goPopupMsgManager.GetComponent<UIPopupMsgManager>();
 			}
 		
-			return instance_;
+			return _instance;
 		}
 	}
 	
 	void OnDestroy()
 	{
-		instance_ = null;
+		_instance = null;
 	}
 	
 	void Awake()
 	{
-		instance_ = this;
+		_instance = this;
 //		transform = GetComponent<Transform> ();
 
 		closeClickPrevent	= () => {pnlClickPrevention.SetActive(false);};

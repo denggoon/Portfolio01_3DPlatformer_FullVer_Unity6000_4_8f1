@@ -2,31 +2,15 @@ using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections.Generic;
 
-public class ObjectPooler : MonoBehaviour
+public class ObjectPooler : AutoCreateSceneSingleton<ObjectPooler>
 {
-	private static ObjectPooler instance_;
+	private bool _isQuitting;
 
-	public static ObjectPooler instance
+	// 앱/플레이모드 종료 시 다른 오브젝트의 OnDisable 등에서 새 풀 컨테이너를 생성/재배치하려다
+	// 함께 파괴되는 중인 _ObjectPooler 하위로 SetParent를 시도해 에러가 나는 것을 막는다
+	void OnApplicationQuit()
 	{
-		get
-		{
-			if (instance_ == null)
-			{
-				GameObject obj = new GameObject("_ObjectPooler");
-				instance_ = obj.AddComponent<ObjectPooler>();
-			}
-			return instance_;
-		}
-	}
-
-	void Awake()
-	{
-		instance_ = this;
-	}
-
-	void OnDestroy()
-	{
-		instance_ = null;
+		_isQuitting = true;
 	}
 
 	private const int DefaultCapacity = 10;
@@ -86,6 +70,9 @@ public class ObjectPooler : MonoBehaviour
 
 	public GameObject ObjPop(string name, Vector3 popPos, bool autoActive = true)
 	{
+		if (_isQuitting)
+			return null;
+
 		PoolEntry entry = GetOrCreateEntry(name);
 		if (entry == null)
 			return null;
@@ -103,6 +90,9 @@ public class ObjectPooler : MonoBehaviour
 
 	public bool ObjPush(string name, GameObject go)
 	{
+		if (_isQuitting)
+			return false;
+
 		if (!_pools.TryGetValue(name, out var entry))
 		{
 			Destroy(go);

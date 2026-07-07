@@ -7,11 +7,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using System;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : SceneSingleton<UIManager> {
 
-	private static UIManager instance_;
-
-	private Rect RScreenRect; //우측 화면 분할 
+	private Rect RScreenRect; //우측 화면 분할
 
 	public Text uiTxtFPS;
 	public Text uiTxtCounter;
@@ -69,15 +67,7 @@ public class UIManager : MonoBehaviour {
 	private float screenHeight;
 	private float screenDpi;
 
-	public static UIManager instance
-	{
-		get
-		{
-			return instance_;
-		}
-	}
-
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		if (GameRuleManager.instance != null)
 		{
@@ -87,12 +77,7 @@ public class UIManager : MonoBehaviour {
 			GameRuleManager.instance.OnGameOver     -= ShowFailMsg;
 			GameRuleManager.instance.OnRespawn      -= HandleRespawn;
 		}
-		instance_ = null;
-	}
-
-	void Awake()
-	{
-		instance_ = this;
+		base.OnDestroy();
 	}
 
 	void Start()
