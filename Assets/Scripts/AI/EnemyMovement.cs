@@ -92,7 +92,6 @@ public class EnemyMovement : MonoBehaviour
     public int dropCount = 3;
     private float _objDropForce = 270F;
 
-    private const float DropSpawnDelay   = 0.02F;
     private const float ColliderCenterY  = 0.25F;
     private const float ColliderRadius   = 0.15F;
     private const float ColliderHeight   = 0.5F;
@@ -302,14 +301,9 @@ public class EnemyMovement : MonoBehaviour
                 SoundBoard.instance.PlayFromSoundBoard(SoundID.MON_Despawn, this.transform.position);
 
             if (hasDroppable)
-            {
-                this.gameObject.SetActive(false);
-                Invoke(nameof(MakeDropItems), DropSpawnDelay);
-            }
-            else
-            {
-                Destroy(this.transform.gameObject);
-            }
+                MakeDropItems();
+
+            Destroy(gameObject);
         }
     }
 
@@ -346,8 +340,6 @@ public class EnemyMovement : MonoBehaviour
         var dropRigid = dropItem.GetComponent<Rigidbody>();
         if (dropRigid != null)
             dropRigid.AddForce(droppingDirection * _objDropForce);
-
-        Destroy(this.transform.gameObject);
     }
 
     IEnumerator StartStun(bool stomped)
