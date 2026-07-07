@@ -15,16 +15,6 @@ public class EnemyProj : MonoBehaviour {
 
 	private SoundEventCaller movingSound;
 
-	public Rigidbody GetRigidBody()
-	{
-		if(thisRigidBody == null)
-		{
-			thisRigidBody = GetComponent<Rigidbody>();
-		}
-
-		return thisRigidBody;
-	}
-
 	void Awake()
 	{
 		thisRigidBody = GetComponent<Rigidbody>();
