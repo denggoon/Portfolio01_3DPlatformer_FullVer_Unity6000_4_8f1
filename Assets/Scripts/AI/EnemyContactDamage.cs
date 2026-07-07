@@ -10,8 +10,6 @@ public class EnemyContactDamage : MonoBehaviour
 	public float damage;
 	public float knockbackDist;
 
-	new public Transform transform;
-
 	new public CapsuleCollider collider;
 
 	public int playerLayer;
@@ -19,7 +17,6 @@ public class EnemyContactDamage : MonoBehaviour
 	void Awake()
 	{
 		collider = GetComponent<CapsuleCollider>();
-		transform = GetComponent<Transform>();
 
 		playerLayer = LayerMask.NameToLayer("Player");
 

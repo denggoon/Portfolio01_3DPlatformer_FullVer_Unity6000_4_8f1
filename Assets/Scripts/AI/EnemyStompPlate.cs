@@ -8,13 +8,10 @@ public class EnemyStompPlate : MonoBehaviour {
 	public BoxCollider stompCollider;
 
 //	private int playerLayer;
-	private new Transform transform;
 	private float stompableHeight;
 
 	void Awake()
 	{
-		transform = GetComponent<Transform> ();
-
 		movement = transform.GetComponentInParent<EnemyMovement> ();
 		cannonBall = transform.GetComponentInParent<EnemyCannonBall> ();
 //		playerLayer = LayerMask.NameToLayer("Player");

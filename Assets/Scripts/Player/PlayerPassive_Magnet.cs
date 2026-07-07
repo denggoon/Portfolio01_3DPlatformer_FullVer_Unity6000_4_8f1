@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class PlayerPassive_Magnet : PlayerPassive 
 {
-	new public Transform transform;
-
 	public float magnetForce = 5F;
 
 //	public float magneticInterval = 0F;
@@ -14,11 +12,6 @@ public class PlayerPassive_Magnet : PlayerPassive
 	private int coinLayer;
 
 	private Transform magnetTrail = null;
-
-	void Awake()
-	{
-		transform = GetComponent<Transform>();
-	}
 
 	void Start()
 	{

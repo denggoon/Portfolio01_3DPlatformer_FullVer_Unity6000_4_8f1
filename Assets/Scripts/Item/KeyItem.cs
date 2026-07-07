@@ -5,7 +5,6 @@ public class KeyItem : MonoBehaviour {
 
 	public KeyItemSettings keyItemSettings;
 
-	new public Transform transform;
 	public KeyItemTrigger itemTrigger;
 	public int amount = 1;
 
@@ -18,7 +17,6 @@ public class KeyItem : MonoBehaviour {
 
 	public virtual void Awake()
 	{
-		transform = GetComponent<Transform>();
 		collectCollider = GetComponent<Collider>();
 
 		getSoundStr = "SND_ITM_CMN_GET";

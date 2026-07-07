@@ -23,8 +23,6 @@ public enum E_MONSTER_TYPE
 
 public class EnemyMovement : MonoBehaviour
 {
-    new public Transform transform;
-
     public E_MONSTER_TYPE eMonsterType = E_MONSTER_TYPE.UNIDENTIFIED;
     public string monsterID;
     public E_AI_STATUS eAIStatus;
@@ -105,7 +103,6 @@ public class EnemyMovement : MonoBehaviour
 
     void Awake()
     {
-        transform    = GetComponent<Transform>();
         _myCollider  = GetComponent<CapsuleCollider>();
         nav          = GetComponent<UnityEngine.AI.NavMeshAgent>();
         patrolRoute  = GetComponent<PatrolRoute>();

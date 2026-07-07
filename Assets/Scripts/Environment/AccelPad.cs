@@ -4,14 +4,12 @@ using System.Collections;
 public class AccelPad : MonoBehaviour {
 	
 	private Animator animator;
-	new public Transform transform;
 
 	public float speed = 5.0F;
 	public float duration = 2.5F;
 
 	void Awake()
 	{
-		transform = GetComponent<Transform>();
 		animator = this.transform.GetComponentInChildren<Animator> ();
 	}
 	

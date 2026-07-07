@@ -3,13 +3,10 @@ using System.Collections;
 
 public class PooledObj : MonoBehaviour 
 {
-	new Transform transform;
 	public Transform parentTrans;
 
 	public virtual void Awake()
 	{
-		transform = GetComponent<Transform> ();
-
 		parentTrans = transform.parent;
 	}
 

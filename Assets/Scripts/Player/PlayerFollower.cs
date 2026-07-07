@@ -3,14 +3,7 @@ using System.Collections;
 
 public class PlayerFollower : MonoBehaviour {
 
-	// Update is called once per frame
-	public new Transform transform;
-	void Awake()
-	{
-		transform = GetComponent<Transform> ();
-	}
-
-	void Update () 
+	void Update ()
 	{
 		if(GameRuleManager.instance.playerMove == null) return;
 

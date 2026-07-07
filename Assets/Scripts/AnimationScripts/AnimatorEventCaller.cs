@@ -3,7 +3,6 @@ using System.Collections;
 
 public class AnimatorEventCaller : MonoBehaviour {
 
-	private new Transform transform;
 	public GameObject parentObj;
 	public GameObject fxActionObj;
 
@@ -11,7 +10,6 @@ public class AnimatorEventCaller : MonoBehaviour {
 
 	protected virtual void Awake()
 	{
-		transform = GetComponent<Transform> ();
 		parentObj = transform.parent.gameObject;
 	}
 

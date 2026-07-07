@@ -3,16 +3,10 @@ using System.Collections;
 
 public class StomperDamageTrigger : MonoBehaviour {
 
-	new public Transform transform;
 	public Stomper stomper;
 
-	public float damage = 1F; //스파이크가 주는 데미지 
+	public float damage = 1F; //스파이크가 주는 데미지
 	public float knockbackDist; //스파이크와 부딪혔을때 넉백 크기
-
-	void Awake()
-	{
-		transform = GetComponent<Transform>();
-	}
 
 	void Start()
 	{

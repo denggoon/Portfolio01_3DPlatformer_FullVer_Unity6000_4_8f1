@@ -20,8 +20,6 @@ public class RouteInfo
 
 public class MovingRoute : MonoBehaviour {
 
-	new public Transform transform;
-
 	public GameObject goPatrolPattern;
 //	public Transform[] routeTrans;
 
@@ -29,11 +27,9 @@ public class MovingRoute : MonoBehaviour {
 
 	public int routeIndex = 0;
 
-	public virtual void Awake() //프리팹 routeTrans로 바꾸는 함수 
+	public virtual void Awake() //프리팹 routeTrans로 바꾸는 함수
 	{
-		transform = GetComponent<Transform>();
-
-		if (goPatrolPattern == null) 
+		if (goPatrolPattern == null)
 		{
 			Transform routeBox = transform.parent.Find ("route_Box");
 

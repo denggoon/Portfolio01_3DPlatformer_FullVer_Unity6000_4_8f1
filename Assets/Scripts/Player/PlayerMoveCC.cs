@@ -15,7 +15,6 @@ public class PlayerMoveCC : MonoBehaviour
 	private RecordGameplay replay;
 	public CNJoystick cnJoystick;
 	private PlayerInputAdapter inputAdapter;
-	new public Transform transform;
 
 	public E_PLAYER_ATTACK_TYPE ePlayerAtkType = E_PLAYER_ATTACK_TYPE.HOPNBOP;
 	public float attackDamage = 1.0F;
@@ -128,7 +127,6 @@ public class PlayerMoveCC : MonoBehaviour
 
 	void Awake()
 	{
-		transform = GetComponent<Transform>();
 		inputAdapter = GetComponent<PlayerInputAdapter>();
 
 		if (inputAdapter == null)

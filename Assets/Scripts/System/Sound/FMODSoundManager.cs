@@ -6,8 +6,6 @@ using FMODUnity;
 
 public class FMODSoundManager : SceneSingleton<FMODSoundManager>
 {
-	new public Transform transform;
-
 	private EventInstance BGMsource_;
 	private EventInstance condBGMsrc_;
 	private EventInstance ambient_;
@@ -27,7 +25,6 @@ public class FMODSoundManager : SceneSingleton<FMODSoundManager>
 	protected override void Awake()
 	{
 		base.Awake();
-		transform = GetComponent<Transform>();
 
 		fmodStudioSys = RuntimeManager.StudioSystem;
 		fmodLowLvSys = RuntimeManager.CoreSystem;

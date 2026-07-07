@@ -3,13 +3,7 @@ using System.Collections;
 
 public class KnockBackWall : MonoBehaviour {
 
-	new public Transform transform;
 	public float knockbackDist = 2.0F;
-
-	void Awake()
-	{
-		transform = GetComponent<Transform>();
-	}
 
 	void OnTriggerEnter(Collider collider)
 	{

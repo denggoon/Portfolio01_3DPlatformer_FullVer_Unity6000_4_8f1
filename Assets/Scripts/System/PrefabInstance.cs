@@ -10,14 +10,12 @@ public class PrefabInstance : MonoBehaviour
 {
 	public GameObject parentPrefab;
 	public GameObject fxPrefab;
-	private new Transform transform;
 	private bool isMake = false;
 	private const string fxPrefabName = "FXPrefab";
 	
 #if UNITY_EDITOR 
 	void OnValidate () {
 		if (enabled) {
-			transform = GetComponent<Transform>();
 			Rebuild (fxPrefab);
 		}
 	}

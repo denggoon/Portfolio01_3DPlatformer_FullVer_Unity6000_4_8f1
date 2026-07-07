@@ -3,8 +3,6 @@ using System.Collections;
 
 public class EnemyWeapon : MonoBehaviour {
 
-	new public Transform transform;
-
 	public Transform fireTrans;
 
 	public EnemyMovement movement;
@@ -30,8 +28,6 @@ public class EnemyWeapon : MonoBehaviour {
 	public float cannonShotAngle = 0F;
 
 	void Awake () {
-		transform = GetComponent<Transform>();
-
 		movement = GetComponent<EnemyMovement>();
 
 		movement.SetAttackTimer(attackRate);

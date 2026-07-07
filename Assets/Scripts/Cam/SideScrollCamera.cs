@@ -3,8 +3,6 @@ using System.Collections;
 
 public class SideScrollCamera : MonoBehaviour 
 {
-	new public Transform transform;
-
 	public Camera cam;
 
 	public GameObject moveStandardObj;
@@ -28,11 +26,6 @@ public class SideScrollCamera : MonoBehaviour
 	public Vector3 slidePos;
 	public float slideRate;
 	public float maxCamSlideLength;
-
-	void Awake()
-	{
-		transform = GetComponent<Transform>();
-	}
 
 	// Use this for initialization
 	void Start () {

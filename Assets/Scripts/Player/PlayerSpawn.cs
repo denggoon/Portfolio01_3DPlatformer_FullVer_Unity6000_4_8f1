@@ -3,8 +3,6 @@ using System.Collections;
 
 public class PlayerSpawn : MonoBehaviour
 {
-    new public Transform transform;
-
     public string playerObjStr;
     public string spawnFxObjStr;
     public string closeFxObjStr;
@@ -14,11 +12,6 @@ public class PlayerSpawn : MonoBehaviour
 
     public float spawnDelayTime;
     public float destroyDelayTime;
-
-    void Awake()
-    {
-        transform = GetComponent<Transform>();
-    }
 
     IEnumerator Start()
     {

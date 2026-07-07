@@ -4,8 +4,6 @@ using System.Collections;
 //적의 시야를 구현하는 스크립트 
 public class EnemyVision : MonoBehaviour {
 
-	new public Transform transform;
-
 	public EnemyMovement enemyMovement; //적의 움직임을 담당하는 스크립트가 필요 
 
 	public SphereCollider visionCollider; //적의 시야 범위 감지용 컬라이더 //Vision Layer를 가지고 있으며 Collision, Projectile과 충돌하지 않습니다. 
@@ -35,7 +33,6 @@ public class EnemyVision : MonoBehaviour {
 
 	void Awake()
 	{
-		transform = GetComponent<Transform>();
 		visionCollider = GetComponent<SphereCollider>(); //transform.Find("VisionCollider").GetComponent<SphereCollider>();
 
 		visionRadius = patrolVision;

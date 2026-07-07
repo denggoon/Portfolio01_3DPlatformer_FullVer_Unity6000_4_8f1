@@ -3,13 +3,7 @@ using System.Collections;
 
 public class ExitTrigger : MonoBehaviour 
 {
-	new public Transform transform;
 	public string fxObjStr;
-
-	void Awake()
-	{
-		transform = GetComponent<Transform>();
-	}
 
 	void OnTriggerEnter(Collider collider)
 	{

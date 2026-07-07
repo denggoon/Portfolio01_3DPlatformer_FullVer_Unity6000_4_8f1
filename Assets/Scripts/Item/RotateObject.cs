@@ -3,7 +3,6 @@ using System.Collections;
 
 public class RotateObject : MonoBehaviour {
 
-	new public Transform transform;  
 	public Vector3 axisSpeed;
 	public float speed = 2;
 	
@@ -16,7 +15,6 @@ public class RotateObject : MonoBehaviour {
 
 	void Awake()
 	{
-		transform = GetComponent<Transform>();
 		renderer = GetComponent<Renderer>();
 	}
 	void Start()

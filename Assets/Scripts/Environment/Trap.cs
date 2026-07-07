@@ -4,12 +4,10 @@ using System.Collections;
 
 public class Trap : MonoBehaviour {
 
-	new public Transform transform;
 	private SoundEventCaller soundCaller;
 
 	public virtual void Awake()
 	{
-		transform = GetComponent<Transform>();
 		soundCaller = GetComponent<SoundEventCaller>();
 		if (soundCaller == null) {
 			soundCaller = gameObject.AddComponent<SoundEventCaller>();

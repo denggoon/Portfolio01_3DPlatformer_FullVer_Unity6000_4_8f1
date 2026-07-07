@@ -28,14 +28,10 @@ public class KeyItemSettings : MonoBehaviour {
 	public float initDist;
 	public Vector3 offsetVector;
 
-	public new Transform transform;
-
 	void Awake()
 	{
 //		animator = transform.GetComponentInChildren<Animator> ();
 
-		transform = GetComponent<Transform> ();
-		
 		Collider[] collArr = transform.GetComponentsInChildren<Collider> ();
 		
 		for (int i=0; i<collArr.Length; i++) 
