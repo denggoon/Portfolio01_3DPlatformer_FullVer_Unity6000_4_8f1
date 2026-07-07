@@ -13,7 +13,6 @@ public class EnemyProj : MonoBehaviour {
 
 	private Rigidbody thisRigidBody;
 
-	private PooledObj poolObj;
 	private SoundEventCaller movingSound;
 
 	public Rigidbody GetRigidBody()
@@ -29,9 +28,16 @@ public class EnemyProj : MonoBehaviour {
 	void Awake()
 	{
 		thisRigidBody = GetComponent<Rigidbody>();
-		poolObj = GetComponent<PooledObj>();
 		movingSound = GetComponent<SoundEventCaller> ();
+	}
+
+	// 풀에서 재사용될 때마다 OnEnable이 다시 실행되므로, 발사마다 초기화되어야 하는 상태를 여기서 리셋한다
+	void OnEnable()
+	{
 		lifeTimer = lifeTime;
+
+		thisRigidBody.linearVelocity = Vector3.zero;
+		thisRigidBody.angularVelocity = Vector3.zero;
 
 		if (movingSound != null) {
 			movingSound.PlaySound(this.transform.position);
@@ -120,15 +126,6 @@ public class EnemyProj : MonoBehaviour {
 
 	void PushOrDestroy()
 	{
-		if( poolObj == null)
-		{
-			Destroy (this.gameObject);
-		} else {
-			
-			string name = this.gameObject.name;
-			name = name.Replace("(Clone)", string.Empty);
-			
-			ObjectPooler.instance.ObjPush(name, this.gameObject);
-		}
+		ObjectPooler.instance.ObjPush(this.gameObject.name, this.gameObject);
 	}
 }

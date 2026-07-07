@@ -87,37 +87,14 @@ public class ResourcesManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(fxName)) return;
 
-        if (ObjectPooler.instance != null)
-        {
-            var pooled = ObjectPooler.instance.ObjPop(fxName, pos);
-            if (pooled != null) return;
-        }
-
-        var obj = LoadGameObject("fxs/" + fxName);
-        if (obj != null)
-            GameObject.Instantiate(obj, pos, obj.transform.rotation);
+        ObjectPooler.instance.ObjPop("fxs/" + fxName, pos);
     }
 
     public void AttachEffect(string fxName, Transform parent)
     {
         if (string.IsNullOrEmpty(fxName)) return;
 
-        GameObject loadedObj = null;
-        GameObject attachFx = null;
-
-        if (ObjectPooler.instance != null)
-        {
-            loadedObj = ObjectPooler.instance.ObjPop(fxName, parent.position);
-            attachFx = loadedObj;
-        }
-
-        if (loadedObj == null)
-        {
-            loadedObj = LoadGameObject("fxs/" + fxName);
-            if (loadedObj != null)
-                attachFx = GameObject.Instantiate(loadedObj, parent.position, parent.rotation);
-        }
-
+        GameObject attachFx = ObjectPooler.instance.ObjPop("fxs/" + fxName, parent.position);
         if (attachFx != null)
             attachFx.transform.SetParent(parent);
     }

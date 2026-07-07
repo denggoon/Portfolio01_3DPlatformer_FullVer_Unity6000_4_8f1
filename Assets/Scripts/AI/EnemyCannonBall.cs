@@ -14,24 +14,37 @@ public class EnemyCannonBall : MonoBehaviour {
 
 	private bool isJumping = false;
 	private Rigidbody thisRigidBody;
-	
-	private PooledObj poolObj;
-	
+
+	private bool defaultIsKinematic;
+	private bool defaultUseGravity;
+
 	public Rigidbody GetRigidBody()
 	{
 		if(thisRigidBody == null)
 		{
 			thisRigidBody = GetComponent<Rigidbody>();
 		}
-		
+
 		return thisRigidBody;
 	}
-	
+
 	void Awake()
 	{
 		thisRigidBody = GetComponent<Rigidbody>();
-		poolObj = GetComponent<PooledObj>();
+		defaultIsKinematic = thisRigidBody.isKinematic;
+		defaultUseGravity = thisRigidBody.useGravity;
+	}
+
+	// 풀에서 재사용될 때마다 OnEnable이 다시 실행되므로, onJumping()이 바꿔놓은 물리 상태를 여기서 원복한다
+	void OnEnable()
+	{
 		lifeTimer = lifeTime;
+		isJumping = false;
+
+		thisRigidBody.isKinematic = defaultIsKinematic;
+		thisRigidBody.useGravity = defaultUseGravity;
+		thisRigidBody.linearVelocity = Vector3.zero;
+		thisRigidBody.angularVelocity = Vector3.zero;
 	}
 	
 	public void SetDamage(float damage) //외부에서 본 발사체 스크립트에 데미지를 설정할 수 있도록 해주는 함수 
@@ -161,16 +174,7 @@ public class EnemyCannonBall : MonoBehaviour {
 		{
 			flyingSoundEvent.keyOff();
 		}
-		
-		if( poolObj == null)
-		{
-			Destroy (this.gameObject);
-		} else {
-			
-			string name = this.gameObject.name;
-			name = name.Replace("(Clone)", string.Empty);
-			
-			ObjectPooler.instance.ObjPush(name, this.gameObject);
-		}
+
+		ObjectPooler.instance.ObjPush(this.gameObject.name, this.gameObject);
 	}
 }

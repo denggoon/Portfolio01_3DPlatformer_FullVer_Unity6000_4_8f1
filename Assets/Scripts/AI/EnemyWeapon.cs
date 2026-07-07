@@ -103,7 +103,7 @@ public class EnemyWeapon : MonoBehaviour {
 		Debug.DrawRay(firePos, shootingDir, Color.red);
 
 		if (!string.IsNullOrEmpty (atkFxStr))
-			ObjectPooler.instance.ObjPop (atkFxStr, firePos);
+			ResourcesManager.instance.PopEffect (atkFxStr, firePos);
 
 		if(Physics.Raycast(shootRay, out hit, attackRange)) //시야 범위내에서 레이를 플레이어 방향으로 발사 했을때 
 		{
@@ -133,9 +133,9 @@ public class EnemyWeapon : MonoBehaviour {
 		}
 		//Raycast를 그냥 진행하면 transform.position의 특성상 발바닥에서 레이를 발사하기 때문에 collider 크기의 반값 높이에서 시작 
 
-		GameObject rsrc = ResourcesManager.instance.LoadGameObject (projObjStr);
-		GameObject proj = GameObject.Instantiate(rsrc, firePos, rsrc.transform.rotation) as GameObject;
-		//발사체 생성 
+		GameObject proj = ObjectPooler.instance.ObjPop (projObjStr, firePos);
+		if (proj == null) return;
+		//발사체 생성 (풀에서 재사용 또는 신규 생성)
 
 		if (isCannonBall == false) {
 			EnemyProj enemProj = proj.GetComponent<EnemyProj> (); //발사체 스크립트 접근 
