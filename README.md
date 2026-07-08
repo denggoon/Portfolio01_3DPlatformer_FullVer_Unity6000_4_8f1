@@ -20,7 +20,7 @@ Unity 5.1.4f1에서 시작하여 Unity 6000.4.8f1까지 직접 마이그레이�
 
 - **CharacterController 기반 플레이어 이동** — 점프, 더블점프, 넉백, 가속패드, 안티그래비티, 이동 플랫폼 탑승
 - **FMOD 오디오 미들웨어 통합** — SoundBoard 추상화 레이어를 통한 BGM·SFX·환경음 제어
-- **오브젝트 풀링 시스템** — 런타임 오브젝트 생성 비용 절감
+- **오브젝트 풀링 시스템** — `UnityEngine.Pool.ObjectPool<T>` 기반, 씬 배치 없이 자동 초기화
 - **Addressables 기반 런타임 로딩** — 비동기 로딩, 핸들 캐싱, 씬·에셋 통합 관리
 - **모바일·PC 입력 분기** — CNJoystick과 레거시 Input System을 단일 인터페이스로 추상화
 - **복수 씬 플로우** — 프리로딩, 씬 전환, 게임 레디 카운트다운, 스테이지 클리어·게임오버 흐름
@@ -42,6 +42,11 @@ Unity 5 시대 코드베이스에서 발견한 주요 문제점과 개선 내용
 | 플레이어 스폰 | `Awake()`에서 동기 로드 | `Start()` 코루틴에서 Addressables 비동기 로드 |
 | 화면 비율 대응 | 배경 카메라 고정 스케일 | `BgCameraFit`으로 화면 비율에 맞게 자동 조정 |
 | `FindObjectOfType` | Unity 6 deprecated API 사용 | `FindAnyObjectByType`으로 전환 |
+| 적 AI 로직 | `EnemyMovement.cs` 단일 클래스에 Patrol/Chase/Lost 로직 전부 혼재 | `IEnemyState` 인터페이스 기반 상태머신(`AI/States/`)으로 분리 |
+| UI-게임로직 결합 | `GameRuleManager`가 `UIManager` 함수를 직접 호출 | C# 이벤트로 디커플링 |
+| 오브젝트 풀링 | 커스텀 풀러가 씬에 배치된 적 없어 사실상 매번 `Instantiate`로 동작 | `UnityEngine.Pool.ObjectPool<T>` 기반으로 재작성, 씬 배치 없이 자동 초기화 |
+| 싱글턴 보일러플레이트 | 매니저마다 `_instance`/`Awake`/`OnDestroy`를 손으로 중복 구현 | `Singleton<T>`(앱 전역) / `SceneSingleton<T>`(씬 배치형) / `AutoCreateSceneSingleton<T>`(자동생성형) 3종 베이스로 통일 |
+| `transform` 캐싱 | Unity 5 시절 관행으로 MonoBehaviour 기본 `transform` 프로퍼티를 `new`로 shadowing | 제거, 빌트인 프로퍼티 직접 사용 |
 
 ### 런타임 버그 수정
 
@@ -50,6 +55,7 @@ Unity 5 시대 코드베이스에서 발견한 주요 문제점과 개선 내용
 | `OnDestroy` 콜백 | `OnDestoy()` 오타로 콜백 미실행, 싱글턴 참조 미해제 | `OnDestroy()` 수정 |
 | 씬 종료 NullReferenceException | `PlayerMoveCC` / `ReplayGameplay`의 `OnDestroy`에서 파괴 순서 미보장으로 NRE 발생 | `GameRuleManager.instance` null 가드 추가 |
 | 야간 배경 렌더링 | Night 카메라 프리팹의 배경 스프라이트가 레이어 미설정으로 렌더링 안 됨, 넓은 화면에서 잔상 발생 | 레이어 수정 + `BgCameraFit`으로 화면 커버 |
+| 앱 종료 시 크래시 | 종료 시퀀스 중 다른 오브젝트가 이미 파괴되는 중인 풀러 오브젝트 하위로 `SetParent` 시도 | `OnApplicationQuit` 가드로 종료 중 신규 생성 차단 |
 
 ### 코드 품질 개선
 
@@ -60,6 +66,7 @@ Unity 5 시대 코드베이스에서 발견한 주요 문제점과 개선 내용
 | PlayerPrefs 키 | `"Speed"`, `"InputMode"` 등 하드코딩 문자열 | `PrefKeys` 정적 상수 클래스 |
 | 서버 URL | 로컬 네트워크 IP 주소 코드 내 하드코딩 | `[SerializeField]`로 Inspector 설정으로 이동 |
 | 런타임 Debug.Log | 개발용 로그 18개 파일에 산재 | 제거 또는 `LogError`/`LogWarning` 등급 상향 |
+| 죽은 코드 | 호출부 없는 `SoundManager.cs`(FMOD 도입 전 잔재), `GetRigidBody()` getter, 오타로 미실행되던 `OnDestoy()` | 전부 삭제 |
 
 ### 환경 설정
 
@@ -83,10 +90,17 @@ Assets/Scripts/
 │   └── Input/
 │       ├── PlayerInputAdapter.cs    # 입력 읽기 + 입력 모드 설정
 │       └── PlayerInputState.cs      # 입력 값 전달 struct
+├── AI/
+│   ├── EnemyMovement.cs         # 상태머신 컨텍스트 (상태 로직은 States/로 위임)
+│   └── States/
+│       ├── IEnemyState.cs
+│       ├── EnemyPatrolState.cs
+│       ├── EnemyChaseState.cs
+│       └── EnemyLostState.cs
 ├── System/
 │   ├── GameRuleManager.cs       # 게임 상태·타이머·점수·씬 흐름
 │   ├── DataLoadingSystem/
-│   │   ├── ObjectPooler/        # 오브젝트 풀링
+│   │   ├── ObjectPooler/        # UnityEngine.Pool.ObjectPool<T> 기반 오브젝트 풀링
 │   │   └── ResourcesManager.cs  # Addressables 기반 리소스 로드
 │   └── Sound/
 │       ├── FMODSoundManager.cs  # FMOD 래퍼
@@ -96,7 +110,10 @@ Assets/Scripts/
 ├── Util/
 │   ├── AnimatorParams.cs        # 애니메이터 파라미터 상수
 │   ├── PrefKeys.cs              # PlayerPrefs 키 상수
-│   └── SoundID.cs               # 사운드 ID 상수
+│   ├── SoundID.cs               # 사운드 ID 상수
+│   ├── Singleton.cs             # 앱 전역 싱글턴 (자동생성 + DontDestroyOnLoad)
+│   ├── SceneSingleton.cs        # 씬 배치 전용 싱글턴
+│   └── AutoCreateSceneSingleton.cs  # 자동생성 씬 스코프 싱글턴
 └── UI/
     ├── UIManager.cs             # UI 전반 관리
     └── OptionPanel.cs           # 입력 모드·튜닝값 설정 UI
