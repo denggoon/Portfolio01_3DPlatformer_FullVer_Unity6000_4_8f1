@@ -46,6 +46,7 @@ public class SideScrollCamera : MonoBehaviour
 
 	[SerializeField]
 	private bool isCameraFunctionHeld = false;
+	public bool IsCameraFunctionHeld { get { return isCameraFunctionHeld; } }
 	public void HoldCameraFunction(bool flag)
 	{
 		isCameraFunctionHeld = flag;
