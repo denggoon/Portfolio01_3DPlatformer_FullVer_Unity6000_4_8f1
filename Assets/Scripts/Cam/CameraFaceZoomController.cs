@@ -1,9 +1,11 @@
 using UnityEngine;
 
-// 마우스 휠로 캐릭터 얼굴 클로즈업 <-> 기본 쿼터뷰 카메라를 전환하고,
+// 마우스 휠로 캐릭터 얼굴 클로즈업 <-> 기본 쿼터뷰 <-> 줌아웃(더 멀리) 카메라를 전환하고,
 // 우클릭 드래그로 캐릭터를 중심으로 카메라를 수평 공전(궤도 회전)시킨다.
-// 스크롤량을 0~1 사이 zoomAmount로 누적하고, 매 프레임 기본값과 클로즈업값을 zoomAmount로 보간한 뒤,
-// 그 결과에 orbitAngle만큼 월드 Y축 회전을 한 번 더 얹는 방식으로 두 기능을 합성한다
+// 스크롤량을 -1~1 사이 zoomAmount로 누적한다 (0 = 기본, +1 = 완전 클로즈업, -1 = 완전 줌아웃).
+// 줌아웃은 클로즈업과 달리 기본 오프셋 벡터를 그대로 늘리기만 하면 되므로 회전은 그대로 두면 된다
+// (같은 방향으로 카메라만 더 멀어지는 것이라 방향을 다시 계산할 필요가 없음).
+// 매 프레임 기본값과 목표값을 zoomAmount로 보간한 뒤, 그 결과에 orbitAngle만큼 월드 Y축 회전을 한 번 더 얹는 방식으로 두 기능을 합성한다
 // (오프셋 벡터를 Y축으로 회전시키면 높이(Y)는 그대로 유지되면서 수평으로만 도는, "공전" 형태가 그대로 나온다).
 // SideScrollCamera.CameraFollow()는 위치의 Y축에 자체 스무딩을 걸기 때문에, 회전과 위치를 같은 프레임에
 // 완전히 동기화해서 바꾸려면 줌 동작 중엔 CameraFollow()를 멈추고(HoldCameraFunction) 위치도 직접 계산해야 한다.
@@ -19,6 +21,9 @@ public class CameraFaceZoomController : MonoBehaviour
 	[Header("클로즈업 시 카메라가 바라볼 지점 - 플레이어 기준 상대 위치(대략 얼굴 높이)")]
 	public Vector3 faceLookOffset = new Vector3(0F, 1.6F, 0F);
 
+	[Header("줌아웃 카메라 위치 - 기본 오프셋에 곱하는 배율(방향/회전은 기본과 동일)")]
+	public float zoomOutDistanceScale = 1.6F;
+
 	[Header("휠 반응 속도")]
 	public float scrollSensitivity = 4F; // 휠 한 틱당 목표 zoomAmount 증가폭 배율
 	public float zoomMoveSpeed = 2F;     // 목표 zoomAmount를 따라가는 속도 (초당 zoomAmount 변화량)
@@ -32,8 +37,9 @@ public class CameraFaceZoomController : MonoBehaviour
 
 	private Vector3 closeUpDistancePos;
 	private Quaternion closeUpRotation;
+	private Vector3 zoomOutDistancePos;
 
-	private float targetZoomAmount = 0F; // 0 = 기본 쿼터뷰, 1 = 완전 클로즈업
+	private float targetZoomAmount = 0F; // -1 = 완전 줌아웃, 0 = 기본 쿼터뷰, 1 = 완전 클로즈업
 	private float zoomAmount = 0F;
 	private float orbitAngle = 0F; // 캐릭터를 중심으로 한 수평 공전 각도(도), 우클릭 드래그로 계속 누적됨
 	private bool weAreHolding = false; // 우리가 HoldCameraFunction(true)를 걸어둔 상태인지
@@ -53,7 +59,7 @@ public class CameraFaceZoomController : MonoBehaviour
 		if (sideCam.IsCameraFunctionHeld && !weAreHolding) return; // 다른 카메라 이벤트가 이미 카메라를 점유 중이면 무시
 
 		float scroll = Input.GetAxis("Mouse ScrollWheel");
-		targetZoomAmount = Mathf.Clamp01(targetZoomAmount + scroll * scrollSensitivity);
+		targetZoomAmount = Mathf.Clamp(targetZoomAmount + scroll * scrollSensitivity, -1F, 1F);
 		zoomAmount = Mathf.MoveTowards(zoomAmount, targetZoomAmount, Time.deltaTime * zoomMoveSpeed);
 
 		if (Input.GetMouseButton(1)) // 우클릭을 누르고 있는 동안만 드래그로 공전
@@ -63,15 +69,25 @@ public class CameraFaceZoomController : MonoBehaviour
 
 		// 줌은 CameraFollow()의 Y축 스무딩을 우회해야 하므로 홀드가 필요하지만,
 		// 공전은 오프셋의 Y값을 바꾸지 않아 CameraFollow()에 맡겨도 스무딩 지연이 생기지 않는다.
-		bool zoomActive = zoomAmount > 0F || targetZoomAmount > 0F;
+		bool zoomActive = zoomAmount != 0F || targetZoomAmount != 0F;
 		if (zoomActive != weAreHolding)
 		{
 			sideCam.HoldCameraFunction(zoomActive);
 			weAreHolding = zoomActive;
 		}
 
-		Vector3 zoomedDistancePos = Vector3.Lerp(defaultDistancePos, closeUpDistancePos, zoomAmount);
-		Quaternion zoomedRotation = Quaternion.Slerp(defaultRotation, closeUpRotation, zoomAmount);
+		Vector3 zoomedDistancePos;
+		Quaternion zoomedRotation;
+		if (zoomAmount >= 0F)
+		{
+			zoomedDistancePos = Vector3.Lerp(defaultDistancePos, closeUpDistancePos, zoomAmount);
+			zoomedRotation = Quaternion.Slerp(defaultRotation, closeUpRotation, zoomAmount);
+		}
+		else
+		{
+			zoomedDistancePos = Vector3.Lerp(defaultDistancePos, zoomOutDistancePos, -zoomAmount);
+			zoomedRotation = defaultRotation; // 방향은 그대로 두고 거리만 멀어진다
+		}
 
 		Quaternion orbitDelta = Quaternion.Euler(0F, orbitAngle, 0F);
 		Vector3 finalDistancePos = orbitDelta * zoomedDistancePos;
@@ -96,6 +112,8 @@ public class CameraFaceZoomController : MonoBehaviour
 
 		// 카메라 위치, 바라볼 지점 모두 플레이어 기준 상대 오프셋이라 플레이어 월드 위치와 무관하게 고정된 방향이 나온다.
 		closeUpRotation = Quaternion.LookRotation(faceLookOffset - closeUpDistancePos);
+
+		zoomOutDistancePos = defaultDistancePos * zoomOutDistanceScale;
 
 		hasCachedDefaults = true;
 	}
